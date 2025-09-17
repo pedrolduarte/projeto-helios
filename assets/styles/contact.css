@@ -1,0 +1,69 @@
+
+#contact {
+	background: linear-gradient(120deg, #232526 0%, #414345 100%);
+	padding: 64px 0 56px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 340px;
+	box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
+	border-radius: 32px;
+	margin: 40px 0 32px 0;
+}
+
+.contact-container {
+	max-width: 480px;
+	width: 100%;
+	background: #18191a;
+	border-radius: 18px;
+	box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18);
+	padding: 40px 32px 32px 32px;
+	text-align: center;
+}
+
+.contact-title, .contact-container h1 {
+	color: #ff9800;
+	font-size: 2rem;
+	font-weight: 700;
+	margin-bottom: 18px;
+}
+
+.contact-desc {
+	color: #e0e0e0;
+	font-size: 1.15rem;
+	margin-bottom: 32px;
+	line-height: 1.7;
+}
+
+.contact-btn {
+	display: inline-block;
+	background: linear-gradient(90deg, #ff9800 60%, #232526 100%);
+	color: #fff;
+	padding: 14px 36px;
+	border-radius: 24px;
+	font-weight: 600;
+	text-decoration: none;
+	font-size: 1.1rem;
+	box-shadow: 0 4px 16px rgba(255,152,0,0.12);
+	transition: background 0.2s, transform 0.2s;
+	margin-top: 8px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+}
+
+.contact-btn-icon {
+	display: inline-block;
+	vertical-align: middle;
+	width: 1.2em;
+	height: 1.2em;
+	margin-right: 10px;
+	background: url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/svgs/solid/envelope.svg') no-repeat center/contain;
+	filter: brightness(0) invert(1);
+}
+
+.contact-btn:hover {
+	background: linear-gradient(90deg, #ff9800 0%, #18191a 100%);
+	transform: translateY(-3px) scale(1.04);
+	color: #fff;
+}

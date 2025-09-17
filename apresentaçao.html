@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helios - Apresentação</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles/StylesA/styles.css">
+  <link rel="stylesheet" href="assets/styles/StylesA/header.css">
+  <link rel="stylesheet" href="assets/styles/StylesA/footer.css">
+  <style>
+    main {
+      background: linear-gradient(120deg, #232526 0%, #414345 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 60px;
+    }
+    .video-section {
+  display: flex;
+  flex-direction: column;   /* título em cima, vídeo embaixo */
+  align-items: center;      /* centraliza horizontalmente */
+  justify-content: center;  /* centraliza verticalmente */
+  min-height: 80vh;         /* ocupa boa parte da tela */
+  text-align: center;
+}
+
+.video-section h1 {
+  margin-bottom: 20px;
+  color: #ff9800;
+}
+
+.instagram-media {
+  margin: 0 auto !important;  
+}
+    .info-section {
+      max-width: 900px;
+      text-align: center;
+      background: rgba(0,0,0,0.4);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+    .info-section h2 {
+      color: #ff9800;
+      margin-bottom: 16px;
+    }
+    .info-section p {
+      line-height: 1.6;
+      font-size: 1.1rem;
+      color: #ddd;
+    }
+    
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo-wrapper">
+        <div class="logo-sun"></div>
+        <img src="assets/images/logo.png" alt="Logo da Helios" id="logo">
+      </div>
+      <ul id="navlist">
+        <li class="navitem"><a href="index.html#hero">Início</a></li>
+        <li class="navitem"><a href="index.html#about">Sobre Nós</a></li>
+        <li class="navitem"><a href="index.html#services">Serviços</a></li>
+        <li class="navitem"><a href="index.html#contact">Contato</a></li>
+      </ul>
+      <button id="mobile_btn"><i class="fa-solid fa-bars"></i></button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="video-section">
+      <h1>Conheça a Helios</h1>
+    
+      <blockquote class="instagram-media" 
+        data-instgrm-permalink="https://www.instagram.com/reel/DOMeiZ_ERlj/" 
+        data-instgrm-version="14">
+      </blockquote>
+    
+      <script async src="https://www.instagram.com/embed.js"></script>
+    </section>
+    
+    
+    <!-- Section com informações -->
+    <section class="info-section">
+      <h2>Sobre a Empresa</h2>
+      <p>
+        A <strong>Helios</strong> é especializada em soluções de energia solar, ajudando empresas e famílias
+        a economizarem na conta de luz enquanto contribuem para um futuro sustentável.
+        Nosso compromisso é unir tecnologia, economia e responsabilidade ambiental.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://youtube.com/" target="_blank" aria-label="YouTube" class="footer-icon youtube">
+        <i class="fa-brands fa-youtube"></i>
+      </a>
+      <a href="https://instagram.com/" target="_blank" aria-label="Instagram" class="footer-icon instagram">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a href="https://discord.com/" target="_blank" aria-label="Discord" class="footer-icon discord">
+        <i class="fa-brands fa-discord"></i>
+      </a>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2023 Helios - Todos os direitos reservados.</p>
+    </div>
+  </footer>
+</body>
+</html>

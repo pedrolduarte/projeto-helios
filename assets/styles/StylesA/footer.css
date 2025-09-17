@@ -1,0 +1,71 @@
+footer {
+    background: linear-gradient(120deg, #232526 0%, #414345 100%);
+    color: #fff;
+    padding: 32px 0 16px 0;
+    text-align: center;
+    font-size: 1rem;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    box-shadow: 0 -2px 24px 0 rgba(255, 152, 0, 0.08);
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+}
+
+.footer-links {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}
+
+.footer-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #232526;
+    color: #ffd700;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 12px 0 rgba(255, 152, 0, 0.10);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.footer-icon:hover {
+    background: #ff9800;
+    color: #fff;
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 4px 24px 0 rgba(255, 152, 0, 0.18);
+}
+
+.footer-icon.youtube {
+    color: #ff0000;
+}
+.footer-icon.youtube:hover {
+    background: #ff0000;
+    color: #fff;
+}
+
+.footer-icon.instagram {
+    color: #e1306c;
+}
+.footer-icon.instagram:hover {
+    background: #e1306c;
+    color: #fff;
+}
+
+.footer-icon.discord {
+    color: #5865F2;
+}
+.footer-icon.discord:hover {
+    background: #5865F2;
+    color: #fff;
+}
+
+.footer-copy {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-top: 8px;
+}

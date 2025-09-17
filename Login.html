@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helios - Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles/StylesA/login.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="assets/images/logo.png" alt="Logo Helios">
+        <h2>Bem-vindo à Helios</h2>
+        <p>Entre na sua conta ou cadastre-se</p>
+      </div>
+
+      <!-- Formulário com redirecionamento -->
+      <form class="login-form" onsubmit="event.preventDefault(); window.location.href='index.html';">
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" placeholder="E-mail" required>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" placeholder="Senha" required>
+        </div>
+
+        <button type="submit" class="btn-login">Entrar</button>
+
+        <div class="login-footer">
+          <p>Não tem uma conta? <a href="#">Cadastre-se</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

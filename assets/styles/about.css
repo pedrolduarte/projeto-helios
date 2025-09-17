@@ -1,0 +1,74 @@
+#about {
+  padding: 60px 0 60px 0;
+  background: #18191a;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-highlight{
+    color: #ff9800;
+}
+.about-desc {
+  color: #fffffe; /* amarelo solar */
+}
+
+.about-features {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  gap: 32px;
+  margin-top: 40px;
+  flex-wrap: wrap; /* Tópicos dinâmicos: quebram só se precisar */
+}
+
+.about-feature {
+  background: #232526;
+  border-radius: 16px;
+  padding: 28px 24px 20px 24px;
+  min-width: 200px;
+  max-width: 260px;
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 12px 0 rgba(255,152,0,0.06);
+  color: #e0e0e0;
+  transition: transform 0.18s;
+}
+.about-feature:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 6px 24px 0 rgba(255,152,0,0.14);
+}
+
+.about-feature svg {
+  margin-bottom: 10px;
+  height: 38px;
+  width: 38px;
+}
+
+.about-feature span {
+  font-size: 1.08rem;
+  font-weight: 500;
+}
+
+/* Responsivo para telas pequenas */
+@media (max-width: 900px) {
+  .about-features {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .about-feature {
+    width: 90%;
+    max-width: 350px;
+  }
+}

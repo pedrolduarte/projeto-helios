@@ -1,0 +1,95 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff9800, #121212);
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .login-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  
+  .login-box h1 {
+    color: #ff9800;
+    margin-bottom: 10px;
+    font-size: 2rem;
+  }
+  
+  .login-box h2 {
+    margin-bottom: 30px;
+    color: #121212;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background: #f1f1f1;
+    border-radius: 40px;
+    padding: 10px 15px;
+  }
+  
+  .input-group i {
+    color: #ff9800;
+    margin-right: 10px;
+  }
+  
+  .input-group input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    font-size: 1rem;
+  }
+  
+  .btn-login {
+    background: #ff9800;
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    padding: 12px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .btn-login:hover {
+    background: #e68900;
+  }
+  
+  .signup {
+    margin-top: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .signup a {
+    color: #ff9800;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .signup a:hover {
+    text-decoration: underline;
+  }
+.logologin{
+    width: 50px;
+    align-items: center;
+}  

@@ -36,9 +36,7 @@
     $password = $mysqli->real_escape_string($_POST['password']);
 
     // Query para buscar o usuário no banco de dados
-    $sql_code = "SELECT * FROM conta WHERE email = ?";
-
-    $stmt = $mysqli->prepare($sql_code);
+    $stmt = $mysqli->prepare("SELECT * FROM conta WHERE email = ?");
     if (!$stmt) {
         header("Location: login.php?error=server_error");
         exit;

@@ -64,6 +64,12 @@
 
             // Redireciona para o dashboard
             header("Location: dashboard.php");
+
+            // Atualizar ultimo login
+            $update_stmt = $mysqli->prepare("UPDATE conta SET ULTIMO_LOGIN = NOW() WHERE ID_CONTA = ?");
+            $update_stmt->bind_param("i", $user['ID_CONTA']);
+            $update_stmt->execute();
+            $update_stmt->close();
             exit;
         } else {
             header("Location: login.php?error=invalid_credentials");

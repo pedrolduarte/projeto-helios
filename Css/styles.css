@@ -90,16 +90,17 @@
 
 
 /* Benefícios */
+/* ===== Seção de Benefícios ===== */
 #benefits {
+  background-color: #ffffff;
   padding: 80px 8%;
-  background: #fff;
 }
 
 .benefits-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 50px;
+  justify-content: space-between;
+  gap: 60px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -107,50 +108,80 @@
 .benefits-image img {
   width: 100%;
   max-width: 500px;
-  border-radius: 12px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Título principal */
 .benefits-content h2 {
   font-size: 2.4rem;
-  margin-bottom: 30px;
+  font-weight: 700;
   color: #121212;
+  margin-bottom: 40px;
+  line-height: 1.3;
 }
 
 .benefits-content h2 span {
   color: #ff9800;
 }
 
+/* Cada benefício individual */
 .benefit-item {
   display: flex;
   align-items: flex-start;
-  gap: 15px;
-  margin-bottom: 25px;
+  gap: 18px;
+  margin-bottom: 28px;
 }
 
 .benefit-icon {
-  background: #ff9800;
+  width: 55px;
+  height: 55px;
+  background-color: #ff9800;
   color: #fff;
-  font-size: 1.5rem;
-  padding: 15px;
+  font-size: 1.4rem;
   border-radius: 50%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(255, 152, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.benefit-icon:hover {
+  transform: scale(1.1);
 }
 
 .benefit-text h3 {
   font-size: 1.2rem;
-  margin-bottom: 8px;
   color: #121212;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .benefit-text p {
+  color: #444;
   font-size: 1rem;
-  color: #555;
-  line-height: 1.5;
+  line-height: 1.6;
+  margin: 0;
 }
 
+/* ===== Responsividade ===== */
+@media (max-width: 992px) {
+  .benefits-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .benefits-image img {
+    max-width: 100%;
+  }
+
+  .benefit-item {
+    justify-content: center;
+    text-align: left;
+  }
+}
 
 
 /* ===== Steps Section ===== */
@@ -383,9 +414,14 @@
 }
 
 /* Newsletter */
+.newsletter {
+  text-align: left;
+  margin-bottom: 40px;
+}
+
 .newsletter h2 {
   font-size: 2rem;
-  font-weight: 700;
+  color: #fff;
   margin-bottom: 20px;
 }
 
@@ -396,34 +432,35 @@
 .newsletter-form {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   background: #fff;
   border-radius: 40px;
   overflow: hidden;
-  max-width: 350px;
+  max-width: 400px;
 }
 
 .newsletter-form input {
+  flex: 1;
   border: none;
   outline: none;
-  padding: 14px 20px;
-  flex: 1;
+  padding: 12px 18px;
   font-size: 1rem;
   border-radius: 40px 0 0 40px;
 }
 
 .newsletter-form button {
   background: #ff9800;
-  border: none;
   color: #fff;
-  padding: 0 20px;
-  font-size: 1.2rem;
+  border: none;
+  padding: 12px 18px;
   cursor: pointer;
-  border-radius: 0 40px 40px 0;
-  transition: 0.3s;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border-radius: 0 40px 40px 0; /* 🔹 deixa o botão arredondado na borda direita */
 }
 
 .newsletter-form button:hover {
-  background: #e68900;
+  background: #e68a00;
 }
 
 /* Info */

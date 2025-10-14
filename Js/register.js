@@ -13,9 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
         function validateStep1() {
             const nome = document.getElementById("nome").value.trim();
             const email = document.getElementById("email").value.trim();
+            const cpf = document.getElementById("cpf").value.trim();
             const senha = document.getElementById("senha").value.trim();
 
-            if (!nome || !email || !senha) {
+            if (!nome || !email || !cpf || !senha) {
                 showNotification("Por favor, preencha todos os campos antes de prosseguir.");
                 return false;
             }
@@ -24,6 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 showNotification("Por favor, insira um email válido.");
+                return false;
+            }
+
+            // Validação básica de CPF (formato brasileiro)
+            const cpfRegex = /^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/;
+            if (!cpfRegex.test(cpf)) {
+                showNotification("Por favor, insira um CPF válido (formato: 123.456.789-00).");
                 return false;
             }
 
@@ -127,11 +135,26 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // Validar campos da etapa 2
             const nascimento = document.getElementById("nascimento").value;
-            const endereco = document.getElementById("endereco").value.trim();
-            const cidade = document.getElementById("cidade").value.trim();
+            const cep = document.getElementById("cep").value.trim();
+            const numero = document.getElementById("numero").value.trim();
+            const telefone = document.getElementById("telefone").value.trim();
 
-            if (!nascimento || !endereco || !cidade) {
+            if (!nascimento || !cep || !numero || !telefone) {
                 showNotification("Por favor, preencha todos os campos para finalizar o cadastro.");
+                return;
+            }
+
+            // Validação básica de CEP (formato brasileiro)
+            const cepRegex = /^\d{5}-?\d{3}$/;
+            if (!cepRegex.test(cep)) {
+                showNotification("Por favor, insira um CEP válido (formato: 12345-678).");
+                return;
+            }
+
+            // Validação básica de telefone
+            const telefoneRegex = /^\(\d{2}\)\s?\d{4,5}-?\d{4}$/;
+            if (!telefoneRegex.test(telefone)) {
+                showNotification("Por favor, insira um telefone válido (formato: (11) 99999-9999).");
                 return;
             }
 

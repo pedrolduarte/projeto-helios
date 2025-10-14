@@ -31,6 +31,9 @@
           <label for="email">E-mail</label>
           <input type="email" id="email" placeholder="Digite seu e-mail" required>
 
+          <label for="cpf">CPF</label>
+          <input type="text" id="cpf" placeholder="Digite seu CPF" required>
+
           <label for="senha">Senha</label>
           <input type="password" id="senha" placeholder="Crie uma senha" required>
 
@@ -42,11 +45,14 @@
           <label for="nascimento">Data de Nascimento</label>
           <input type="date" id="nascimento" required>
 
-          <label for="endereco">Endereço Completo</label>
-          <input type="text" id="endereco" placeholder="Digite seu endereço" required>
-
           <label for="cep">CEP</label>
-          <input type="text" id="cidade" placeholder="Digite seu CEP" required>
+          <input type="text" id="cep" placeholder="Digite seu CEP" required>
+
+          <label for="numero">Número da Residência</label>
+          <input type="text" id="numero" placeholder="Digite o número da residência" required>
+
+          <label for="telefone">Número de Telefone</label>
+          <input type="tel" id="telefone" placeholder="Digite seu telefone" required>
 
           <div style="display: flex; gap: 10px;">
             <button type="button" class="btn-secondary" id="prevStep">Voltar</button>

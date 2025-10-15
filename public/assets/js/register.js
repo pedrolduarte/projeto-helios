@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // Simular redirecionamento após 2 segundos
             setTimeout(() => {
-                window.location.href = "login.php";
+                window.location.href = "../app/view/login.php";
             }, 2000);
         });
     }

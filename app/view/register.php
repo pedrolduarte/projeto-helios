@@ -4,15 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helios - Cadastro</title>
-  <link rel="stylesheet" href="Css/login.css" />
+  <link rel="stylesheet" href="../../public/assets/css/login.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <script src="Js/register.js" defer></script>
+  <script src="../../public/assets/js/register.js" defer></script>
 </head>
 <body>
 
   <div class="login-container">
     <div class="login-box">
-      <img src="img/Sun.png" alt="Logo Helios" class="logo">
+      <img src="../../public/assets/img/Sun.png" alt="Logo Helios" class="logo">
       <h2>Crie sua Conta</h2>
 
       <!-- Indicador de progresso -->

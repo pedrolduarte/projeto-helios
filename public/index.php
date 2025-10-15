@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Helios - Energia Solar</title>
-  <link rel="stylesheet" href="Css/styles.css">
-
+  <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -16,7 +15,7 @@
   <header>
     <nav class="navbar" id="navbar">
       <div class="logo">
-        <img src="img/Sun.png" alt="Helios Logo" id="logo-img">
+        <img src="assets/img/Sun.png" alt="Helios Logo" id="logo-img">
         <span class="logo-text">HELIOS</span>
       </div>
       <ul class="nav-links">
@@ -24,7 +23,7 @@
         <li><a href="#services">Nossos Serviços</a></li>
         <li><a href="#reviews">Depoimentos</a></li>
       </ul>
-      <a href="login.html" class="btn-contact">
+      <a href="../app/view/login.php" class="btn-contact">
         Área do Cliente <span>➔</span>
       </a>
     </nav>
@@ -35,13 +34,13 @@
   <section id="hero">
     <div class="hero-carousel">
       <div class="hero-slide active">
-        <img src="img/Hero.png" alt="Painéis solares">
+        <img src="assets/img/Hero.png" alt="Painéis solares">
       </div>
       <div class="hero-slide">
-        <img src="img/hero2.jpg" alt="Instalação solar">
+        <img src="assets/img/hero2.jpg" alt="Instalação solar">
       </div>
       <div class="hero-slide">
-        <img src="img/hero3.jpg" alt="Energia limpa">
+        <img src="assets/img/hero3.jpg" alt="Energia limpa">
       </div>
     </div>
     <div class="hero-text">
@@ -64,7 +63,7 @@
   <div class="benefits-container">
     <!-- imagem à esquerda -->
     <div class="benefits-image">
-      <img src="img/Frame 31.png" alt="Instalação de painéis solares">
+      <img src="assets/img/Frame 31.png" alt="Instalação de painéis solares">
     </div>
 
     <!-- conteúdo à direita -->
@@ -175,7 +174,7 @@
           <div class="quote">“</div>
           <p>A Helios reduziu minha conta de energia em mais de 70%. Atendimento rápido e suporte incrível!</p>
           <div class="testimonial-footer">
-            <img src="img/client1.jpg" alt="Eduardo" class="avatar">
+            <img src="assets/img/client1.jpg" alt="Eduardo" class="avatar">
             <div class="info"><h4>Eduardo</h4><span>Cliente</span></div>
             <div class="stars">★★★★★</div>
           </div>
@@ -184,7 +183,7 @@
           <div class="quote">“</div>
           <p>Agora tenho independência da rede elétrica. Melhor decisão que já tomei para minha casa.</p>
           <div class="testimonial-footer">
-            <img src="img/client2.jpg" alt="Pedro" class="avatar">
+            <img src="assets/img/client2.jpg" alt="Pedro" class="avatar">
             <div class="info"><h4>Pedro</h4><span>Cliente</span></div>
             <div class="stars">★★★★☆</div>
           </div>
@@ -193,7 +192,7 @@
           <div class="quote">“</div>
           <p>A instalação foi rápida e os técnicos super atenciosos. Recomendo a todos!</p>
           <div class="testimonial-footer">
-            <img src="img/client3.jpg" alt="Levi" class="avatar">
+            <img src="assets/img/client3.jpg" alt="Levi" class="avatar">
             <div class="info"><h4>Levi</h4><span>Cliente</span></div>
             <div class="stars">★★★★★</div>
           </div>
@@ -213,7 +212,7 @@
         </div>
       </div>
       <div class="footer-info">
-        <img src="img/logo.png" alt="Helios Logo" class="footer-logo">
+        <img src="assets/img/logo.png" alt="Helios Logo" class="footer-logo">
         <p>
           A Helios oferece soluções em energia solar para residências e empresas,<br>
           levando economia, sustentabilidade e tecnologia até você.
@@ -247,6 +246,6 @@
   </footer>
 
   <!-- Script externo -->
-  <script src="Js/script.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
 </html>

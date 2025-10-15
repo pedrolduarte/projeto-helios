@@ -1,6 +1,6 @@
 <?php   
     // Conexão com o banco de dados
-    include("connection.php");
+    include("../config/connection.php");
 
     // Inicia a sessão se não estiver iniciada
     if (!isset($_SESSION)) {
@@ -9,25 +9,25 @@
 
     // Verifica se o método de requisição é POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header("Location: login.php?error=invalid_method");
+        header("Location: ../view/login.php?error=invalid_method");
         exit;
     }
 
     // Verifica se os campos de email e senha foram preenchidos
     if (empty($_POST['email']) || empty($_POST['password'])) {
-        header("Location: login.php?error=empty_fields");
+        header("Location: ../view/login.php?error=empty_fields");
         exit;
     }
 
     // Verificações referente ao email
     if (strlen($_POST['email']) == 0) {
-        header("Location: login.php?error=empty_email");
+        header("Location: ../view/login.php?error=empty_email");
         exit;
     }
 
     // Verificações referente a senha
     if (strlen($_POST['password']) == 0) {
-        header("Location: login.php?error=empty_password");
+        header("Location: ../view/login.php?error=empty_password");
         exit;
     }
 
@@ -38,7 +38,7 @@
     // Query para buscar o usuário no banco de dados
     $stmt = $mysqli->prepare("SELECT * FROM conta WHERE email = ?");
     if (!$stmt) {
-        header("Location: login.php?error=server_error");
+        header("Location: ../view/login.php?error=server_error");
         exit;
     }
     
@@ -46,7 +46,7 @@
     $stmt->execute();
     $sql_query = $stmt->get_result();
     if (!$sql_query) {
-        header("Location: login.php?error=server_error");
+        header("Location: ../view/login.php?error=server_error");
         exit;
     }
 
@@ -61,7 +61,7 @@
             $_SESSION['clientID'] = $user['ID_CLIENTE'];
 
             // Redireciona para o dashboard
-            header("Location: dashboard.php");
+            header("Location: ../view/dashboard.php");
 
             // Atualizar ultimo login
             $update_stmt = $mysqli->prepare("UPDATE conta SET ULTIMO_LOGIN = NOW() WHERE ID_CONTA = ?");
@@ -70,11 +70,11 @@
             $update_stmt->close();
             exit;
         } else {
-            header("Location: login.php?error=invalid_credentials");
+            header("Location: ../view/login.php?error=invalid_credentials");
             exit;
         }
     } else {
-        header("Location: login.php?error=invalid_credentials");
+        header("Location: ../view/login.php?error=invalid_credentials");
         exit;
     }
 

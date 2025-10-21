@@ -13,7 +13,7 @@
     <div class="login-box">
       <img src="../../public/assets/img/Sun.png" alt="Logo Helios" class="logo">
       <h2>Área do Cliente</h2>
-      <form action="../controllers/loginMethod.php" method="POST">
+      <form action="../controllers/loginController.php" method="POST">
         <label for="email">E-mail</label>
         <input id="email" placeholder="Digite seu e-mail" name="email" type="email" required>
 

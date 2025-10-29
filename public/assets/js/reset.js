@@ -110,7 +110,7 @@ document.getElementById('emailForm').addEventListener('submit', e => {
   formData.append('email', email);
   
   // Enviar requisição
-  fetch('../controllers/requestTokenController.php', {
+  fetch('../controllers/login/requestTokenController.php', {
     method: 'POST',
     body: formData
   })
@@ -244,7 +244,7 @@ document.getElementById('passwordForm').addEventListener('submit', e => {
   console.log('Enviando nova senha:', '***hidden***');
   
   // Enviar requisição
-  fetch('../controllers/useTokenController.php', {
+  fetch('../controllers/login/useTokenController.php', {
     method: 'POST',
     body: formData
   })

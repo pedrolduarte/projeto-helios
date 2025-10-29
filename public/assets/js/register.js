@@ -236,10 +236,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             console.log("=== ENVIANDO REQUISIÇÃO ===");
-            console.log("URL:", '../controllers/registerController.php');
+            console.log("URL:", '../controllers/login/registerController.php');
 
             // Enviar dados via fetch
-            fetch('../controllers/registerController.php', {
+            fetch('../controllers/login/registerController.php', {
                 method: 'POST',
                 body: formData
             })
@@ -351,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Função para testar conexão com o servidor
         function testServerConnection() {
             console.log("=== TESTANDO CONEXÃO COM SERVIDOR ===");
-            fetch('../controllers/registerController.php', {
+            fetch('../controllers/login/registerController.php', {
                 method: 'GET'
             })
             .then(response => {

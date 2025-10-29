@@ -1,5 +1,5 @@
 <?php
-    include("../controllers/protect.php");
+    require("../controllers/protect.php");
 ?>
 
 <!DOCTYPE html>

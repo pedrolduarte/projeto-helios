@@ -1,0 +1,245 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ff6600, #ffb300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.reset-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.reset-card {
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.logo {
+  width: 70px;
+  margin-bottom: 10px;
+  transition: transform 0.4s;
+}
+
+.logo:hover {
+  transform: rotate(360deg);
+}
+
+.title {
+  color: #ff9800;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.step {
+  display: none;
+}
+
+.step.active {
+  display: block;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+label {
+  text-align: left;
+  color: #ff9800;
+  font-weight: 500;
+}
+
+input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+input:focus {
+  border-color: #ff9800;
+  outline: none;
+  box-shadow: 0 0 6px rgba(255, 152, 0, 0.5);
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn, .btn-back {
+  flex: 1;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn {
+  background: #ff9800;
+  color: #fff;
+}
+
+.btn:hover {
+  background: #e68900;
+  transform: scale(1.03);
+}
+
+.btn-back {
+  background: #f1f1f1;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.btn-back:hover {
+  background: #e0e0e0;
+}
+
+/* ===== Mensagem de sucesso ===== */
+.success-box {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 10px 0 0 10px;
+  box-shadow: -4px 4px 15px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  font-size: 1rem;
+  display: none;
+  z-index: 1000;
+  animation: slideInRight 0.5s ease forwards;
+}
+
+
+
+.success-box.show {
+  display: flex;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* ===== Inputs de Código ===== */
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.code-box {
+  width: 45px;
+  height: 55px;
+  text-align: center;
+  font-size: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  transition: all 0.3s;
+  color: #333;
+  font-weight: 600;
+}
+
+.code-box:focus {
+  border-color: #ff9800;
+  box-shadow: 0 0 6px rgba(255, 152, 0, 0.6);
+  outline: none;
+}
+
+.code-box.filled {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+
+/* ===== ESTILOS PARA NOTIFICAÇÕES ===== */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  z-index: 1000;
+  min-width: 300px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: slideIn 0.3s ease-out;
+}
+
+.error-notification {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+}
+
+.success-notification {
+  background: linear-gradient(135deg, #51cf66, #40c057);
+}
+
+.loading-notification {
+  background: linear-gradient(135deg, #339af0, #228be6);
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification-message {
+  flex: 1;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.close-btn:hover {
+  opacity: 1;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Melhorar aparência dos botões durante loading */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

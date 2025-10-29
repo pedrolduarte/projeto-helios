@@ -22,7 +22,7 @@
 
         <div class="remember">
           <label><input type="checkbox"> Lembrar-me</label>
-          <a href="#">Esqueceu a senha?</a>
+          <a href="recuperarsenha.php">Esqueceu a senha?</a>
         </div>
 
         <button type="submit" class="btn-primary">Entrar</button>

@@ -37,17 +37,6 @@
     }
 
     // Verificação dos campos do formulário (Vazios)
-    // Debug: log dos dados recebidos
-    error_log("=== DADOS RECEBIDOS VIA POST ===");
-    error_log("completeName: " . (isset($_POST['completeName']) ? $_POST['completeName'] : 'NÃO ENVIADO'));
-    error_log("email: " . (isset($_POST['email']) ? $_POST['email'] : 'NÃO ENVIADO'));
-    error_log("cpf: " . (isset($_POST['cpf']) ? $_POST['cpf'] : 'NÃO ENVIADO'));
-    error_log("password: " . (isset($_POST['password']) ? '***fornecida***' : 'NÃO ENVIADO'));
-    error_log("birthDate: " . (isset($_POST['birthDate']) ? $_POST['birthDate'] : 'NÃO ENVIADO'));
-    error_log("cep: " . (isset($_POST['cep']) ? $_POST['cep'] : 'NÃO ENVIADO'));
-    error_log("adressNumber: " . (isset($_POST['adressNumber']) ? $_POST['adressNumber'] : 'NÃO ENVIADO'));
-    error_log("phone: " . (isset($_POST['phone']) ? $_POST['phone'] : 'NÃO ENVIADO'));
-    
     if (empty($_POST['completeName']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['birthDate']) || empty($_POST['cep']) || empty($_POST['adressNumber']) || empty($_POST['phone']) || empty($_POST['cpf'])) {
         error_log("ERRO: Campos obrigatórios em branco");
         header("Location: ../view/register.php?error=empty_fields");
@@ -156,7 +145,6 @@
 
     // Inicia a transação (todos os dados inseridos ou nenhum)
     $mysqli->begin_transaction();
-    
     try {
         // Insert do cliente
         $costumerStmt = $mysqli->prepare("INSERT INTO CLIENTE (CPF_CNPJ, NOME_CLIENTE, DATA_NASCIMENTO) VALUES(?, ?, ?)");
@@ -171,12 +159,12 @@
         $costumerStmt->close();
 
         // Insert do endereço (comentado temporariamente para inserir os dados necessarios primeiro)
-        // $costumerAdressStmt = $mysqli->prepare("INSERT INTO CLIENTE_ENDERECO(ID_CLIENTE, CEP, NUMERO) VALUES(?, ?, ?)");
-        // $costumerAdressStmt->bind_param("iss", $costumerID, $cep, $adressNumber);
-        // if (!$costumerAdressStmt->execute()) {
-        //     throw new Exception("Falha ao inserir endereço do cliente" . $mysqli->error);
-        // }
-        // $costumerAdressStmt->close();
+        $costumerAdressStmt = $mysqli->prepare("INSERT INTO CLIENTE_ENDERECO(ID_CLIENTE, CEP, NUMERO) VALUES(?, ?, ?)");
+        $costumerAdressStmt->bind_param("iss", $costumerID, $cep, $adressNumber);
+        if (!$costumerAdressStmt->execute()) {
+            throw new Exception("Falha ao inserir endereço do cliente" . $mysqli->error);
+        }
+        $costumerAdressStmt->close();
 
         // Insert da conta
         $accountStmt = $mysqli->prepare("INSERT INTO CONTA(ID_CLIENTE, EMAIL, SENHA_HASH, TELEFONE) VALUES(?, ?, ?, ?)");

@@ -19,9 +19,9 @@
         <span class="logo-text">HELIOS</span>
       </div>
       <ul class="nav-links">
-        <li><a href="#about">Sobre Nós</a></li>
-        <li><a href="#services">Nossos Serviços</a></li>
-        <li><a href="#reviews">Depoimentos</a></li>
+        <li><a href="#benefits">Benefícios</a></li>
+        <li><a href="#steps">Nossos Serviços</a></li>
+        <li><a href="#why-solar">Depoimentos</a></li>
       </ul>
       <a href="../app/view/login.php" class="btn-contact">
         Área do Cliente <span>➔</span>

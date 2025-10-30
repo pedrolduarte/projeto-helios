@@ -2,6 +2,9 @@
     
     // Conexão com o banco de dados
     require("../../config/connection.php");
+
+    // Conexão com o .env
+    require("../../config/env.php");
     
     // Inicia a sessão se não estiver iniciada
     if (!isset($_SESSION)) {
@@ -59,7 +62,7 @@
     $token = bin2hex(random_bytes(3)); // 6 caracteres hexadecimais
 
     // Hash do token
-    $secret = 'helios_sistema_solar_secret_key_2025_ultra_secure!@#$%';
+    $secret = $_ENV['RECOVER_SECRET'];
     $tokenHash = hash_hmac('sha256', $token, $secret);
 
     // Define o tempo de expiração do token

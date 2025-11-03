@@ -60,8 +60,13 @@
             $_SESSION['accountID'] = $user['ID_CONTA'];
             $_SESSION['clientID'] = $user['ID_CLIENTE'];
 
-            // Redireciona para o dashboard
-            header("Location: ../../view/dashboard.php");
+            if ($user['isAdmin'] == 1) {
+                // Redireciona para a área de administração
+                header("Location: ../../view/admin.php");    
+            } else {
+                // Redireciona para o dashboard
+                header("Location: ../../view/dashboard.php");
+            }
 
             // Atualizar ultimo login
             $update_stmt = $mysqli->prepare("UPDATE conta SET ULTIMO_LOGIN = NOW() WHERE ID_CONTA = ?");

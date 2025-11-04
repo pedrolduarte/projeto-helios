@@ -1,7 +1,7 @@
 <?php
     
     // Conexão com o banco de dados
-    require("../../config/connection.php");
+    require("../config/connection.php");
 
     // Função para destruir a sessão do administrador
     function destroyAdminSession() {
@@ -9,7 +9,7 @@
         unset($_SESSION['accountID']);
         unset($_SESSION['clientID']);
         session_destroy();
-        header("Location: ../../view/admin/login.php");
+        header("Location: ../view/login.php");
         exit;
     }
 

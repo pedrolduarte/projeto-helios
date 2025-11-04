@@ -1,9 +1,14 @@
 <?php
     require("../controllers/protect.php");
     require("../config/connection.php");
+    
+    // Inicia a sessão se não estiver iniciada
+    if (!isset($_SESSION)) {
+        session_start();
+    }
 
     // Salva o nome completo do usuário na sessão
-    if (!$_SESSION['completeName']) {
+    if (!isset($_SESSION['completeName'])) {
         $clientID = $_SESSION['clientID'];
         $stmt = $mysqli->prepare("SELECT NOME_CLIENTE FROM CLIENTE WHERE ID_CLIENTE = ?");
         $stmt->bind_param("i", $clientID);

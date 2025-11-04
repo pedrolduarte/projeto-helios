@@ -83,46 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== CHARTS - OVERVIEW ===== */
   const kpiBarCtx = document.getElementById("kpiBarChart");
-  if (kpiBarCtx) {
-    const meses = [
-      "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
-      "Jul", "Ago", "Set", "Out", "Nov", "Dez"
-    ];
-    const geracao = [280, 320, 350, 370, 390, 410, 430, 420, 400, 380, 360, 340];
-    const consumo = [300, 310, 320, 330, 360, 380, 390, 385, 370, 365, 355, 350];
-
-    new Chart(kpiBarCtx, {
-      type: "bar",
-      data: {
-        labels: meses,
-        datasets: [
-          {
-            label: "Geração (kWh)",
-            data: geracao,
-            backgroundColor: "rgba(255,152,0,.9)",
-            borderRadius: 8,
-            maxBarThickness: 28,
-          },
-          {
-            label: "Consumo (kWh)",
-            data: consumo,
-            backgroundColor: "rgba(0,0,0,.08)",
-            borderRadius: 8,
-            maxBarThickness: 28,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: true } },
-        scales: {
-          y: { beginAtZero: true, ticks: { color: "#555" } },
-          x: { ticks: { color: "#555" } },
-        },
-      },
-    });
-  }
+  // A criação do gráfico ocorre mais abaixo, depois de carregar os dados de consumo
+  // para que possamos popular o dataset de consumo com os valores do servidor.
 
   const donutEconomia = document.getElementById("donutEconomia");
   if (donutEconomia)
@@ -221,6 +183,85 @@ document.addEventListener("DOMContentLoaded", () => {
       return [];
     }
   }
+
+    // ===== Inicializa gráfico de KPI usando dados de consumo do ano atual =====
+    (async () => {
+      if (!kpiBarCtx) return;
+
+      const meses = [
+        "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+        "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+      ];
+
+      // Valores de geração mantidos (pode ser adaptado futuramente)
+      const geracao = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+      // Pega dados do ano atual (retorna array com {mes, consumo, economia} ou [])
+      const currentYear = new Date().getFullYear();
+      let dadosAno = [];
+      try {
+        dadosAno = await carregarDadosConsumo(currentYear);
+      } catch (err) {
+        console.error('Falha ao carregar dados de consumo para KPI:', err);
+        dadosAno = [];
+      }
+
+      // Preencher array de consumo com zeros por padrão
+      const consumoArr = new Array(12).fill(0);
+
+      // Mapeia os dados retornados para índices (meses) — aceita mes numérico ou string
+      const monthNameMap = { jan:0, fev:1, mar:2, abr:3, mai:4, jun:5, jul:6, ago:7, set:8, out:9, nov:10, dez:11 };
+      dadosAno.forEach(item => {
+        let idx = null;
+        if (typeof item.mes === 'number') idx = item.mes - 1;
+        else if (!isNaN(parseInt(item.mes))) idx = parseInt(item.mes) - 1;
+        else {
+          const key = String(item.mes).toLowerCase().slice(0,3);
+          if (monthNameMap[key] !== undefined) idx = monthNameMap[key];
+        }
+
+        if (idx !== null && idx >= 0 && idx < 12) {
+          // garante número
+          consumoArr[idx] = Number(item.consumo) || 0;
+        }
+      });
+
+      // Cria instância do Chart e expõe para debug/atualizações futuras
+      const kpiBarChart = new Chart(kpiBarCtx, {
+        type: 'bar',
+        data: {
+          labels: meses,
+          datasets: [
+            {
+              label: 'Geração (kWh)',
+              data: geracao,
+              backgroundColor: 'rgba(255,152,0,.9)',
+              borderRadius: 8,
+              maxBarThickness: 28,
+            },
+            {
+              label: 'Consumo (kWh)',
+              data: consumoArr,
+              backgroundColor: 'rgba(96, 96, 96, 0.5)',
+              borderRadius: 8,
+              maxBarThickness: 28,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: true } },
+          scales: {
+            y: { beginAtZero: true, ticks: { color: '#555' } },
+            x: { ticks: { color: '#555' } },
+          },
+        }
+      });
+
+      // Disponibiliza no escopo global para inspeção/atualização manual
+      window.kpiBarChart = kpiBarChart;
+    })();
 
   // Função para calcular estatísticas (min/max)
   function calcularEstatisticas(dados) {

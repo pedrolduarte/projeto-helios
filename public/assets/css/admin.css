@@ -1,0 +1,134 @@
+:root{
+  --helios:#ff9800; --helios-dark:#e68900; --bg:#fffdf8; --text:#333; --muted:#777;
+  --card:#fff; --shadow:0 3px 10px rgba(0,0,0,.1); --radius:12px
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Poppins",sans-serif;background:var(--bg);color:var(--text)}
+h2{color:var(--helios)}
+.muted{color:var(--muted)}
+a{text-decoration:none}
+
+/* Header */
+.admin-header{background:linear-gradient(90deg,var(--helios),var(--helios-dark));color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 28px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo img{width:40px;height:40px}
+.admin-nav{display:flex;gap:20px}
+.admin-nav a{color:#fff;font-weight:600;position:relative;padding-bottom:4px}
+.admin-nav a.active,.admin-nav a:hover{opacity:.9}
+.admin-nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:#fff;border-radius:2px}
+
+/* Layout */
+.content{padding:24px;max-width:1200px;margin:0 auto}
+.section{display:none;animation:fade .25s}
+.section.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:12px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;text-align:center}
+.card-icon{color:var(--helios);font-size:1.8rem;margin-bottom:8px}
+
+/* Panels & Chart */
+.panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-top:16px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.chart-wrap{width:100%}
+.chart-wrap--small{height:260px} /* gráfico mais justo */
+.chart-wrap canvas{width:100%!important;height:100%!important}
+
+/* Tabela base */
+.table{width:100%;border-collapse:collapse;background:#fff;box-shadow:var(--shadow);border-radius:12px;overflow:hidden;margin-top:12px}
+.table th{background:var(--helios);color:#fff;text-align:left;padding:10px}
+.table td{padding:10px;border-bottom:1px solid #eee}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.85rem}
+.badge.success{background:#e8fff0;color:#199a4f;border:1px solid #c5f0d6}
+
+/* Ações */
+.table-actions{display:flex;gap:10px;margin:10px 0}
+.table-actions input{flex:1;max-width:360px;padding:10px;border:1px solid #ddd;border-radius:10px}
+.actions{display:flex;gap:6px}
+.btn{background:var(--helios);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
+.btn:hover{background:var(--helios-dark)}
+.btn-outline{background:#fff;color:var(--helios);border:2px solid var(--helios);border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer}
+.btn-outline:hover{background:var(--helios);color:#fff}
+.btn-small{border:none;border-radius:8px;padding:6px 8px;cursor:pointer;color:#fff}
+.btn-small.edit{background:#3b82f6}
+.btn-small.del{background:#ef4444}
+.btn-small.info{background:#06b6d4}
+.btn-small.warn{background:#f59e0b}
+
+/* Placas */
+.placas-head{display:flex;justify-content:flex-end;margin:12px 0}
+
+/* Carrossel de cadastro */
+.carrossel{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:16px;margin-top:14px}
+.hidden{display:none!important}
+.carrossel-head{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:8px}
+.carrossel-steps{display:flex;align-items:center;gap:8px;justify-content:center;margin:6px 0 14px}
+.step-bullet{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#ffe0b2;color:#a36100;font-weight:800}
+.step-bullet.active{background:var(--helios);color:#fff}
+.step-line{flex:1;height:3px;background:#ffe0b2;border-radius:2px}
+.carrossel-page{display:none}
+.carrossel-page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:700}
+.field input, .field select{padding:10px;border:1px solid #ddd;border-radius:10px}
+.carrossel-nav{display:flex;align-items:center;margin-top:14px}
+.grow{flex:1}
+
+/* Modal Cliente */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:50}
+.modal.show{display:flex}
+.modal-card{background:#fff;border-radius:12px;box-shadow:var(--shadow);width:min(680px,92%);padding:12px}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.btn-icon{background:#fff;border:2px solid #ddd;border-radius:10px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.modal-body .grid{grid-template-columns:1fr 1fr 1fr}
+.modal-foot{display:flex;justify-content:flex-end;margin-top:10px}
+
+/* Toast */
+.toast{position:fixed;right:24px;bottom:24px;background:#22c55e;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);display:none;align-items:center;gap:10px;z-index:60}
+.toast.show{display:flex;animation:fade .25s}
+
+/* Responsivo */
+@media (max-width:1024px){ .grid{grid-template-columns:1fr 1fr} .modal-body .grid{grid-template-columns:1fr 1fr} }
+@media (max-width:680px){ .grid{grid-template-columns:1fr} .admin-nav{gap:12px} .admin-nav a{font-size:.95rem}}
+
+
+/* Usuários */
+.usuarios-head {
+  display: flex;
+  justify-content: flex-end;
+  margin: 14px 0;
+}
+
+#usuariosTable .actions {
+  display: flex;
+  gap: 6px;
+}
+
+#usuariosTable .btn-small.edit { background: #3b82f6; }
+#usuariosTable .btn-small.del { background: #ef4444; }
+#usuariosTable .btn-small.warn { background: #f59e0b; }
+
+/* Modal usuário */
+#modalUsuario .grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+#modalUsuario #senhaField {
+  grid-column: 1 / -1;
+}
+
+#modalUsuario select, 
+#modalUsuario input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+#modalUsuario .modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}

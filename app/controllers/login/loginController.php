@@ -66,7 +66,16 @@
                 header("Location: ../../view/admin.php");    
             } else {
                 // Redireciona para o dashboard
-                header("Location: ../../view/dashboard.php");
+                $stmt = $mysqli->prepare("SELECT CLIENTE_INSTALADO FROM CLIENTE WHERE ID_CLIENTE = ?");
+                $stmt->bind_param("i", $user['ID_CLIENTE']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $client = $result->fetch_assoc();
+                if ($client['CLIENTE_INSTALADO'] == 1) {
+                    header("Location: ../../view/dashboard.php");
+                } else {
+                    header("Location: ../../view/noCostumerDashboard.php");
+                }
             }
 
             // Atualizar ultimo login

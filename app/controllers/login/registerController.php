@@ -189,7 +189,7 @@
     // Redireciona para login com sucesso ou dashboard logado
     $_SESSION['accountID'] = $accountID;
     $_SESSION['clientID'] = $costumerID;
-    header("Location: ../../view/dashboard.php");
+    header("Location: ../../view/noCostumerDashboard.php");
     exit;
 ?>
 

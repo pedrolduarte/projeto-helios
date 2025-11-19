@@ -59,7 +59,8 @@
             "SELECT 
                 MES as mes,
                 CONSUMO_KWH as consumo,
-                (CONSUMO_KWH * 0.71) as economia
+                (GERACAO_KWH * 0.71) as economia,
+                COALESCE(GERACAO_KWH, 0) as geracao
             FROM CONSUMO 
             WHERE ID_CLIENTE = ? AND ANO = ?
             ORDER BY MES"
@@ -80,7 +81,8 @@
                 "mes" => getMonthName($row['mes']),
                 "mes_numero" => (int)$row['mes'],
                 "consumo" => (float)$row['consumo'],
-                "economia" => round((float)$row['economia'], 2)
+                "economia" => round((float)$row['economia'], 2),
+                "geracao" => isset($row['geracao']) ? (float)$row['geracao'] : 0.0
             ];
         }
 

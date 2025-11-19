@@ -60,10 +60,17 @@ document.addEventListener("DOMContentLoaded", () => {
     userDropdown.classList.remove("show");
   });
 
-  document.getElementById("logout").addEventListener("click", (e) => {
-    e.preventDefault();
-    alert("Sessão encerrada. Até breve!");
-  });
+  // Logout: garantir que o clique redirecione ao controller de logout.
+  const logoutLink = document.getElementById("logout");
+  if (logoutLink) {
+    logoutLink.addEventListener("click", (e) => {
+      // Não prevenir o comportamento padrão; forçar redirect para garantir compatibilidade
+      const href = logoutLink.getAttribute('href');
+      if (href) {
+        window.location.href = href;
+      }
+    });
+  }
 
   document.getElementById("openSettings").addEventListener("click", (e) => {
     e.preventDefault();
@@ -208,6 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Preencher array de consumo com zeros por padrão
       const consumoArr = new Array(12).fill(0);
+      const geracaoArr = new Array(12).fill(0);
 
       // Mapeia os dados retornados para índices (meses) — aceita mes numérico ou string
       const monthNameMap = { jan:0, fev:1, mar:2, abr:3, mai:4, jun:5, jul:6, ago:7, set:8, out:9, nov:10, dez:11 };
@@ -223,6 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (idx !== null && idx >= 0 && idx < 12) {
           // garante número
           consumoArr[idx] = Number(item.consumo) || 0;
+          geracaoArr[idx] = Number(item.geracao) || 0;
         }
       });
 
@@ -234,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
           datasets: [
             {
               label: 'Geração (kWh)',
-              data: geracao,
+              data: geracaoArr,
               backgroundColor: 'rgba(255,152,0,.9)',
               borderRadius: 8,
               maxBarThickness: 28,
@@ -637,4 +646,32 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     openModal();
   });
+
+  /* ===== CEP Lookup para formulário de perfil (ViaCEP) ===== */
+  const inputCep = document.getElementById('inputCep');
+  const inputLogradouro = document.getElementById('inputLogradouro');
+
+  async function buscarCep(cep) {
+    try {
+      const c = cep.replace(/[^0-9]/g, '');
+      if (c.length !== 8) return null;
+      const res = await fetch(`https://viacep.com.br/ws/${c}/json/`);
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (data.erro) return null;
+      return data; // {logradouro, bairro, localidade, uf, ...}
+    } catch (e) {
+      console.error('CEP lookup falhou', e);
+      return null;
+    }
+  }
+
+  if (inputCep) {
+    inputCep.addEventListener('blur', async () => {
+      const data = await buscarCep(inputCep.value);
+      if (data && inputLogradouro) {
+        inputLogradouro.value = `${data.logradouro || ''} ${data.bairro || ''} ${data.localidade || ''} ${data.uf || ''}`.trim();
+      }
+    });
+  }
 });

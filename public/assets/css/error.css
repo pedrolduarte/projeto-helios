@@ -1,0 +1,151 @@
+/* Estilos para a página de erro do login (Helios) */
+:root{
+    --dark:#1f2b33;
+    --muted:#6b6b6b;
+    --accent:#f0a54a; /* tom quente parecido com o botão da Amazon */
+    --blue:#0b61b8;
+    --bg:#ffffff;
+    --max-width:1100px;
+  }
+  
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color:#222;
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+  
+  /* Topbar */
+  .topbar{
+    background:var(--dark);
+    color:#fff;
+    padding:10px 0;
+    box-shadow:0 1px 0 rgba(0,0,0,0.1);
+  }
+  .topbar-inner{
+    max-width:var(--max-width);
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 16px;
+  }
+  .topbar .logo{
+    width:40px;
+    height:auto;
+  }
+  .topbar .brand{
+    font-weight:700;
+    font-size:18px;
+    letter-spacing:0.4px;
+  }
+  
+  /* Main layout */
+  .error-page{
+    max-width:var(--max-width);
+    margin:36px auto;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:40px;
+    align-items:center;
+    padding:0 16px;
+  }
+  
+  /* Text area */
+  .error-content{
+    padding:20px 0;
+  }
+  .big{
+    font-size:9.5rem; /* muito grande, no estilo Amazon */
+    line-height:0.9;
+    margin:0;
+    color:#8a8a8a;
+    font-weight:300;
+    letter-spacing:6px;
+  }
+  .lead{
+    font-size:1.6rem;
+    margin:12px 0 6px;
+    color:#555;
+  }
+  .help{
+    color:var(--muted);
+    margin-bottom:20px;
+  }
+  
+  /* Actions */
+  .actions{display:flex;gap:12px;margin:18px 0}
+  .btn{
+    display:inline-block;
+    padding:10px 18px;
+    text-decoration:none;
+    border-radius:4px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background:var(--accent);
+    color:#222;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 1px 0 rgba(0,0,0,0.08);
+  }
+  .btn-secondary{
+    background:transparent;
+    color:var(--blue);
+    border:1px solid rgba(11,97,184,0.12);
+  }
+  
+  /* redirect line */
+  .redirect{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:0.95rem;
+  }
+  .redirect .fast-link{
+    margin-left:8px;
+    color:var(--blue);
+    text-decoration:none;
+    font-weight:600;
+  }
+  
+  /* Illustration */
+  .error-illustration{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:18px;
+  }
+  .error-illustration img{
+    max-width:100%;
+    width:300px;
+    height:auto;
+    border-radius:6px;
+  }
+  
+  /* Footer */
+  .page-footer{
+    text-align:center;
+    padding:26px 16px;
+    color:var(--muted);
+    font-size:0.9rem;
+    border-top:1px solid #f0f0f0;
+    margin-top:30px;
+  }
+  
+  /* Responsividade */
+  @media (max-width:900px){
+    .error-page{
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+    .big{
+      font-size:6.5rem;
+      letter-spacing:3px;
+    }
+    .error-illustration img{
+      width:220px;
+    }
+  }

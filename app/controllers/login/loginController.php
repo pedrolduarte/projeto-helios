@@ -60,7 +60,6 @@
             $_SESSION['accountID'] = $user['ID_CONTA'];
             $_SESSION['clientID'] = $user['ID_CLIENTE'];
 
-            error_log("User ID: " . $user['ID_CONTA'] . " logged in." . " isAdmin: " . $user);
             if ($user['IsAdmin'] == 1) {
                 // Redireciona para a área de administração
                 header("Location: ../../view/admin.php");    

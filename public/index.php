@@ -49,7 +49,7 @@
         Reduza sua conta de luz e ajude o meio ambiente.<br>
         Faça uma simulação gratuita e veja quanto pode economizar!
       </p>
-<a href="#services" class="btn-primary">
+<a href="../app/view/simulacao.php" class="btn-primary">
   Simule Agora <span>➔</span>
 </a>
 

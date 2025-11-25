@@ -1,0 +1,52 @@
+:root{
+  --helios:#ff9800;
+  --accent:#ff9800;
+  --bg:#f6f7f9;
+  --card:#ffffff;
+  --muted:#6b7280;
+}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:"Poppins",sans-serif;background:var(--bg);color:#111;height:100vh;display:flex;align-items:center;justify-content:center}
+
+.sim-wrap{width:100%;padding:28px}
+.sim-card{max-width:1100px;margin:0 auto;background:var(--card);border-radius:12px;box-shadow:0 18px 50px rgba(2,6,23,0.12);overflow:hidden}
+
+.sim-header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid #eee}
+.sim-header h1{margin:0;font-size:1.6rem;color:var(--helios)}
+.sim-header button{background:transparent;border:0;font-size:1.1rem;cursor:pointer;color:#666}
+
+.sim-controls{padding:18px 28px;border-bottom:1px solid #f0f0f0}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.row label{display:flex;flex-direction:column;font-size:0.9rem;color:#333}
+.row input{margin-top:8px;padding:10px;border-radius:8px;border:1px solid #ddd}
+
+.actions{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:12px}
+.btn{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer}
+.btn-outline{background:transparent;border:1px solid #ccc;padding:10px 14px;border-radius:10px;cursor:pointer}
+.btn-primary{background:transparent;border:2px solid var(--helios);color:var(--helios);padding:10px 14px;border-radius:40px;text-decoration:none;font-weight:700}
+
+.sim-results{padding:22px 28px}
+
+/* Esconder resultados enquanto aria-hidden for true */
+.sim-results[aria-hidden="true"] {
+  display: none;
+}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.item{background:#fff;border-radius:10px;padding:20px;text-align:center;box-shadow:0 6px 20px rgba(16,24,40,0.04)}
+.item .icon{font-size:26px;color:var(--helios);margin-bottom:12px}
+.item small{display:block;color:var(--muted);margin-bottom:8px}
+.value{font-weight:700;color:#ff9800;font-size:1.05rem}
+
+.note{margin-top:16px;color:#666;font-size:0.9rem;text-align:left}
+
+/* responsivo */
+@media (max-width:900px){
+  .row{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .row{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+  .actions{flex-direction:column;align-items:stretch}
+}

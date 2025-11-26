@@ -4,7 +4,7 @@
 
 ![Helios Logo](public/assets/img/logo.png)
 
-**Uma plataforma web inovadora para democratizar o acesso à energia solar**
+**Uma plataforma web completa para simulação, orçamento e gestão de energia solar**
 
 [![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
@@ -16,7 +16,7 @@
 
 ## 📋 Sobre o Projeto
 
-**Helios Web** é uma plataforma web exclusiva desenvolvida para empresas fornecedoras de soluções em energia solar. O sistema centraliza a captação e gestão de clientes interessados na tecnologia fotovoltaica, eliminando barreiras que dificultam a adoção da energia solar.
+**Helios Web** é uma plataforma web completa para simulação e orçamento de energia solar fotovoltaica. O sistema oferece calculadoras precisas de dimensionamento, gestão inteligente de orçamentos e interface intuitiva para conectar clientes e fornecedores de soluções em energia solar.
 
 ### 🎯 Objetivos
 
@@ -34,20 +34,33 @@ Este projeto foi desenvolvido como trabalho acadêmico por:
 - **Eduardo Kauan** - Administrador de Banco de Dados (DBA)
 - **Levi Felipe** - Testes e Pesquisas
 
-## 🚀 Funcionalidades
+## 🚀 Funcionalidades Principais
 
-### Para Clientes
-- ✅ **Cadastro Personalizado** - Sistema de registro com validação completa
-- 📊 **Relatórios de Consumo** - Visualização do consumo mensal de energia
-- 💰 **Análise de Payback** - Cálculo de retorno sobre investimento
-- 🔒 **Área Segura** - Dashboard personalizado com autenticação
-- 📞 **Suporte Integrado** - Sistema de chamados e atendimento
+### 🧮 Sistema de Simulação
+- ⚡ **Calculadora Solar** - Dimensionamento preciso baseado no consumo
+- 📊 **Análise de Potência** - Cálculo de kWp necessário
+- 🏠 **Configuração Residencial** - Tipo de telhado e área disponível
+- 💰 **Estimativa de Economia** - Projeção financeira personalizada
+- 🌞 **Irradiação Solar** - Dados regionais de incidência solar
 
-### Para Empresa
-- 👥 **Gestão de Clientes** - Controle completo da base de clientes
-- 📦 **Controle de Estoque** - Gerenciamento de produtos e componentes
-- 📈 **Relatórios Segmentados** - Análises por região e estado
-- 🎯 **Leads Qualificados** - Captação direcionada sem concorrência interna
+### 💼 Gestão de Orçamentos
+- 📝 **Solicitação Automática** - Sistema inteligente de criação de orçamentos
+- 🔄 **Status em Tempo Real** - Acompanhamento do progresso (PENDENTE/APROVADO)
+- 📋 **Dashboard Personalizado** - Interface específica por tipo de cliente
+- 🚨 **Sistema de Notificações** - Alertas de status via query parameters
+- 📊 **Histórico de Solicitações** - Gestão completa de propostas anteriores
+
+### 🔐 Autenticação e Segurança
+- 👤 **Login Seguro** - Autenticação com prepared statements
+- 🛡️ **Proteção de Sessão** - Middleware de proteção para áreas restritas
+- 📱 **Interface Responsiva** - Design adaptativo para todos os dispositivos
+- 🔒 **Validação Completa** - Sanitização de entrada e proteção CSRF
+
+### 🏢 Gestão Empresarial
+- 👥 **Clientes Cadastrados** - Base de dados estruturada de usuários
+- 📈 **Análise de Demanda** - Relatórios de simulações e orçamentos
+- 🎯 **Leads Qualificados** - Sistema de captação otimizado
+- 📊 **Métricas de Conversão** - Acompanhamento de resultados
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -62,11 +75,17 @@ Este projeto foi desenvolvido como trabalho acadêmico por:
 - **JavaScript ES6+** - Interatividade e validações
 - **Font Awesome** - Ícones profissionais
 
+### APIs e Integrações
+- **ViaCEP API** - Preenchimento automático de endereços
+- **Simulação Backend** - API interna para cálculos solares
+- **Fetch API** - Comunicação assíncrona JavaScript
+- **Query Parameters** - Sistema de notificações URL-based
+
 ### Arquitetura
-- **MVC Pattern** - Separação de responsabilidades
-- **Prepared Statements** - Segurança contra SQL Injection
-- **Password Hashing** - Criptografia bcrypt para senhas
-- **Session Management** - Controle de autenticação
+- **MVC Pattern** - Separação clara de responsabilidades
+- **Prepared Statements** - Segurança avançada contra SQL Injection
+- **Session Management** - Controle robusto de autenticação
+- **Middleware Protection** - Camada de segurança para rotas protegidas
 
 ## 📁 Estrutura do Projeto
 
@@ -74,22 +93,32 @@ Este projeto foi desenvolvido como trabalho acadêmico por:
 helios-web/
 ├── app/
 │   ├── controllers/          # Controladores MVC
-│   │   ├── loginMethod.php
-│   │   └── registerController.php
+│   │   ├── login/
+│   │   │   └── loginController.php     # Autenticação de usuários
+│   │   ├── costumer/
+│   │   │   ├── simulacaoController.php # API de simulação solar
+│   │   │   └── solicitarOrcamentoController.php # Gestão de orçamentos
+│   │   ├── protect.php       # Middleware de proteção
+│   │   └── finishSessionController.php # Logout seguro
 │   ├── view/                 # Interfaces de usuário
-│   │   ├── login.php
-│   │   ├── register.php
-│   │   └── dashboard.php
-│   └── config/               # Configurações
-│       └── connection.php
-├── public/
-│   └── assets/
-│       ├── css/              # Estilos
-│       ├── js/               # Scripts
-│       └── img/              # Imagens
-├── database/
-│   └── tables.sql           # Estrutura do banco
-└── README.md
+│   │   ├── login.php         # Tela de autenticação
+│   │   ├── noCostumerDashboard.php # Dashboard cliente
+│   │   └── simulacao.php     # Calculadora solar
+│   └── config/               # Configurações do sistema
+│       └── connection.php    # Conexão MySQL
+├── public/assets/            # Recursos públicos
+│   ├── css/
+│   │   ├── login.css         # Estilos de autenticação
+│   │   ├── simulacao.css     # Estilos da calculadora
+│   │   └── noCostumerDashboard.css # Estilos do dashboard
+│   ├── js/
+│   │   ├── simulacao.js      # Lógica da simulação
+│   │   └── noCostumerDashboard.js # Lógica do dashboard
+│   └── img/                  # Imagens e logos
+├── tables.sql               # Estrutura do banco de dados
+├── connection.php           # Configuração de conexão
+├── index.html              # Página inicial
+└── loginMethod.php         # Método de login legado
 ```
 
 ## ⚙️ Instalação e Configuração
@@ -129,7 +158,14 @@ helios-web/
 
 5. **Acesse a Aplicação**
    ```
+   # Página inicial
+   http://localhost/helios-web/index.html
+   
+   # Login de usuários
    http://localhost/helios-web/app/view/login.php
+   
+   # Simulação solar (público)
+   http://localhost/helios-web/app/view/simulacao.php
    ```
 
 ## 🔐 Recursos de Segurança
@@ -149,38 +185,73 @@ O projeto contribui diretamente com o **ODS 7 - Energia Limpa e Acessível** atr
 - 💡 **Transparência** em investimentos sustentáveis
 - 🤝 **Conexão** entre consumidores e soluções verdes
 
-## 📊 Funcionalidades Técnicas
+## 📊 Funcionalidades Técnicas Avançadas
 
-### Sistema de Autenticação
-- Login seguro com validação
-- Registro com múltiplas etapas
-- Validação de CPF em tempo real
-- Verificação de idade (18+ anos)
+### 🧮 Motor de Cálculo Solar
+- **Algoritmo de Dimensionamento** - Cálculo preciso baseado em kWh/mês
+- **Fator de Irradiação** - Dados regionais brasileiros (4.5-6.5 kWh/m²/dia)
+- **Eficiência de Sistema** - Consideração de perdas (inversor, cabeamento, temperatura)
+- **API Híbrida** - Backend PHP + fallback JavaScript para máxima confiabilidade
 
-### Interface Responsiva
-- Design moderno e intuitivo
-- Carousel para formulários longos
-- Notificações em tempo real
-- Animações suaves CSS3
+### 🔄 Sistema de Estados Inteligente
+- **Gestão de Orçamentos** - Status PENDENTE/APROVADO com transições automáticas
+- **Interface Dinâmica** - HTML gerado server-side baseado no estado do banco
+- **Notificações Contextuais** - Sistema de mensagens via query parameters
+- **Persistência de Sessão** - Manutenção de estado entre requisições
 
-### Gestão de Dados
-- Transações MySQL para integridade
-- Logs de erro para debugging
-- Validações client-side e server-side
-- Backup automatizado de sessões
+### 🛡️ Segurança Avançada
+- **Prepared Statements** - Proteção total contra SQL Injection
+- **Session Protection** - Middleware de validação em todas as rotas protegidas
+- **Input Sanitization** - Validação rigorosa de entrada de dados
+- **Error Handling** - Tratamento elegante de erros sem exposição de dados sensíveis
+
+### 🎨 Interface Moderna
+- **Design Responsivo** - Adaptação perfeita para mobile, tablet e desktop
+- **CSS Grid/Flexbox** - Layout moderno e flexível
+- **Animações CSS3** - Transições suaves e profissionais
+- **UX Otimizada** - Fluxo de usuário intuitivo e conversão otimizada
+
+### 🔧 Integração de APIs
+- **ViaCEP Integration** - Preenchimento automático de endereços brasileiros
+- **Fetch API** - Comunicação assíncrona moderna
+- **Error Fallback** - Sistema de backup para máxima disponibilidade
+- **Timeout Handling** - Gestão inteligente de timeouts de rede
 
 ## 📝 Licença
 
 Este projeto é desenvolvido para fins acadêmicos como parte do curso de Tecnologia em Sistemas de informação.
 
+## 🎯 Fluxo de Uso da Aplicação
+
+### Para Novos Usuários
+1. **Acesso Inicial** → `index.html` (página de apresentação)
+2. **Simulação Pública** → `simulacao.php` (calculator sem login)
+3. **Cadastro/Login** → `login.php` (autenticação necessária)
+4. **Dashboard** → `noCostumerDashboard.php` (área do cliente)
+5. **Solicitação** → Orçamento via `solicitarOrcamentoController.php`
+
+### Para Usuários Autenticados
+1. **Login Direto** → Acesso ao dashboard personalizado
+2. **Status Check** → Verificação automática de orçamentos pendentes
+3. **Nova Simulação** → Acesso às ferramentas de cálculo
+4. **Gestão** → Histórico e status de solicitações
+
+## 🚀 Próximas Funcionalidades
+
+- [ ] **Painel Administrativo** - Dashboard para empresa fornecedora
+- [ ] **Sistema de Chat** - Comunicação em tempo real
+- [ ] **Geração de Propostas** - PDFs automáticos de orçamento
+- [ ] **Integração Financeira** - Simulação de financiamento
+- [ ] **App Mobile** - Versão React Native
+
 ## 📞 Contato
 
 Para dúvidas ou sugestões sobre o projeto:
 
-- **Pedro Duarte** - Desenvolvedor Backend
-- **Gabriel Souza** - Desenvolvedor Frontend  
-- **Eduardo Kauan** - DBA
-- **Levi Felipe** - Testes e pesquisas 
+- **Pedro Duarte** - Desenvolvedor Backend & Arquitetura
+- **Gabriel Souza** - Desenvolvedor Frontend & UX/UI
+- **Eduardo Kauan** - DBA & Modelagem de Dados
+- **Levi Felipe** - QA & Testes de Sistema 
 
 ---
 

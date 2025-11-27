@@ -17,6 +17,16 @@ a{text-decoration:none}
 .admin-nav a.active,.admin-nav a:hover{opacity:.9}
 .admin-nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:#fff;border-radius:2px}
 
+/* small address display near logo (optional) */
+.login-address{
+  color: rgba(255,255,255,0.95);
+  font-size: 0.9rem;
+  margin-left: 6px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255,255,255,0.12);
+  white-space:nowrap;
+}
+
 /* Layout */
 .content{padding:24px;max-width:1200px;margin:0 auto}
 .section{display:none;animation:fade .25s}
@@ -76,6 +86,58 @@ a{text-decoration:none}
 .carrossel-nav{display:flex;align-items:center;margin-top:14px}
 .grow{flex:1}
 
+/* === CEP + Número: label acima, dois campos lado a lado ===
+   Apply this to the .field that wraps the address inputs:
+   <div class="field campo-duplo" style="grid-column: 1 / -1;">
+     <label for="cliCep">Endereço - CEP</label>
+     <input id="cliCep" ...>
+     <input id="cliNumero" ...>
+   </div>
+*/
+.field.campo-duplo {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column; /* label above inputs */
+  gap: 8px;
+}
+
+/* container that holds the two inputs side-by-side */
+.field.campo-duplo .duo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* make the cep narrower and number grow */
+.field.campo-duplo .duo input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.field.campo-duplo .duo #cliCep {
+  flex: 0 0 160px; /* fixed/min width for CEP */
+  max-width: 220px;
+}
+
+.field.campo-duplo .duo #cliNumero {
+  flex: 1 1 auto;
+  min-width: 0; /* prevents overflow in flex */
+}
+
+/* responsive: stack inputs on very small screens */
+@media (max-width: 520px) {
+  .field.campo-duplo .duo {
+    flex-direction: column;
+  }
+  .field.campo-duplo .duo #cliCep,
+  .field.campo-duplo .duo #cliNumero {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+}
+
 /* Modal Cliente */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:50}
 .modal.show{display:flex}
@@ -93,7 +155,6 @@ a{text-decoration:none}
 @media (max-width:1024px){ .grid{grid-template-columns:1fr 1fr} .modal-body .grid{grid-template-columns:1fr 1fr} }
 @media (max-width:680px){ .grid{grid-template-columns:1fr} .admin-nav{gap:12px} .admin-nav a{font-size:.95rem}}
 
-
 /* Usuários */
 .usuarios-head {
   display: flex;
@@ -110,25 +171,11 @@ a{text-decoration:none}
 #usuariosTable .btn-small.del { background: #ef4444; }
 #usuariosTable .btn-small.warn { background: #f59e0b; }
 
-/* Modal usuário */
+/* Modal usuário tweaks */
 #modalUsuario .grid {
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
 }
-
-#modalUsuario #senhaField {
-  grid-column: 1 / -1;
-}
-
-#modalUsuario select, 
-#modalUsuario input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-}
-
-#modalUsuario .modal-foot {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
+#modalUsuario #senhaField { grid-column: 1 / -1; }
+#modalUsuario select, #modalUsuario input { padding: 10px; border: 1px solid #ccc; border-radius: 10px; }
+#modalUsuario .modal-foot { display: flex; justify-content: flex-end; margin-top: 10px; }

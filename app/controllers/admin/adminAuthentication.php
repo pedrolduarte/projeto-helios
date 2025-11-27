@@ -1,7 +1,7 @@
 <?php
     
-    // Conexão com o banco de dados
-    require("../config/connection.php");
+    // Conexão com o banco de dados - usando caminho absoluto
+    require(__DIR__ . "/../../config/connection.php");
 
     // Função para destruir a sessão do administrador
     function destroyAdminSession() {

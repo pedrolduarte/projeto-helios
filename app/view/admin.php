@@ -1,5 +1,50 @@
 <?php
+  require("../config/connection.php");
   require("../controllers/admin/adminAuthentication.php");
+
+  $orcamentosCount = 0;
+  $simulacoesCount = 0;
+  $clientesCount = 0;
+
+  try {
+
+    // Orçamentos
+    $stmt = $mysqli->prepare("SELECT COUNT(*) as total FROM ORCAMENTOS");
+    if ($stmt && $stmt->execute()) {
+      $result = $stmt->get_result();
+      if ($result) {
+        $data = $result->fetch_assoc();
+        $orcamentosCount = $data['total'] ?? 0;
+      }
+
+      $stmt->close();
+    }
+
+    $stmt = $mysqli->prepare("SELECT COUNT(*) as total FROM SIMULACOES");
+    if ($stmt && $stmt->execute()) {
+      $result = $stmt->get_result();
+      if ($result) {
+        $data = $result->fetch_assoc();
+        $simulacoesCount = $data['total'] ?? 0;
+      }
+
+      $stmt->close();
+    }
+
+    $stmt = $mysqli->prepare("SELECT COUNT(*) as total FROM CLIENTES WHERE CLIENTE_INSTALADO = 1");
+    if ($stmt && $stmt->execute()) {
+      $result = $stmt->get_result();
+      if ($result) {
+        $data = $result->fetch_assoc();
+        $clientesCount = $data['total'] ?? 0;
+      }
+
+      $stmt->close();
+    }
+
+  } catch (Exception $e) {
+    error_log("ERRO: Falha ao buscar dados para o painel administrativo em admin.php - " . $e->getMessage());
+  }
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +63,21 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
+  <!-- Small utility for screen-reader-only text -->
+  <style>
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+  </style>
+
   <!-- Chart (Dashboard) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -31,68 +91,75 @@
       <img src="../../public/assets/img/Sun.png" alt="Helios Logo"/>
       <h1>Admin</h1>
     </div>
-    <nav class="admin-nav">
-      <a href="#" class="active" data-section="dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
-      <a href="#" data-section="clientes"><i class="fa-solid fa-users"></i> Clientes</a>
-      <a href="#" data-section="placas"><i class="fa-solid fa-solar-panel"></i> Placas</a>
-      <a href="#" data-section="usuarios"><i class="fa-solid fa-id-badge"></i> Usuários</a>
-      <a href="#" id="logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+
+    <nav class="admin-nav" aria-label="Navegação do painel">
+      <a href="#" class="active" data-section="dashboard" aria-current="page"><i class="fa-solid fa-house" aria-hidden="true"></i> <span>Dashboard</span></a>
+      <a href="#" data-section="clientes"><i class="fa-solid fa-users" aria-hidden="true"></i> <span>Clientes</span></a>
+
+      <!-- Removida aba "Placas" e adicionadas "Orçamento" e "Simulações" -->
+      <a href="#" data-section="orcamento"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> <span>Orçamento</span></a>
+      <a href="#" data-section="simulacoes"><i class="fa-solid fa-calculator" aria-hidden="true"></i> <span>Simulações</span></a>
+
+      <a href="#" data-section="usuarios"><i class="fa-solid fa-id-badge" aria-hidden="true"></i> <span>Usuários</span></a>
+      <button id="logout" type="button" aria-label="Sair"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span class="sr-only">Sair</span></button>
     </nav>
   </header>
 
   <!-- CONTEÚDO -->
-  <main class="content">
-
+  <main class="content" id="main" role="main">
     <!-- DASHBOARD -->
-    <section id="dashboard" class="section active">
-      <h2>Visão Geral</h2>
+    <section id="dashboard" class="section active" aria-labelledby="dashboard-title">
+      <h2 id="dashboard-title">Visão Geral</h2>
       <p class="muted">Resumo operacional do sistema Helios.</p>
 
       <div class="card-grid">
         <div class="card">
-          <i class="fa-solid fa-wallet card-icon"></i>
-          <h3>Economia Mensal</h3>
-          <p>R$ 28.430,00</p>
+          <i class="fa-solid fa-wallet card-icon" aria-hidden="true"></i>
+          <h3>Orçamentos</h3>
+          <p><?= $orcamentosCount ?> Cadastrados</p>
         </div>
+
         <div class="card">
-          <i class="fa-solid fa-solar-panel card-icon"></i>
-          <h3>Placas Ativas</h3>
-          <p>184 unidades</p>
+          <i class="fa-solid fa-solar-panel card-icon" aria-hidden="true"></i>
+          <h3>Simulações</h3>
+          <p><?= $simulacoesCount ?> Realizadas</p>
         </div>
+
         <div class="card">
-          <i class="fa-solid fa-user-check card-icon"></i>
+          <i class="fa-solid fa-user-check card-icon" aria-hidden="true"></i>
           <h3>Clientes Ativos</h3>
-          <p>96</p>
+          <p><?= $clientesCount ?> Atualmente</p>
         </div>
       </div>
 
-      <div class="panel">
+      <div class="panel" aria-labelledby="grafico-title">
         <div class="panel-head">
-          <h3>Geração x Consumo (12 meses)</h3>
+          <h3 id="grafico-title">Cadastro de Clientes Mensais</h3>
         </div>
         <div class="chart-wrap chart-wrap--small">
-          <canvas id="dashChart"></canvas>
+          <canvas id="dashChart" role="img" aria-label="Gráfico de cadastros de clientes por mês"></canvas>
         </div>
       </div>
     </section>
 
-    <!-- CLIENTES -->
-    <section id="clientes" class="section">
-      <h2>Clientes</h2>
+    <!-- CLIENTES (mantido) -->
+    <section id="clientes" class="section" aria-labelledby="clientes-title">
+      <h2 id="clientes-title">Clientes</h2>
       <p class="muted">Gerencie os clientes: ver cadastro, editar e definir permissões.</p>
 
       <div class="table-actions">
-        <input type="text" id="searchCliente" placeholder="Buscar cliente..."/>
+        <label for="searchCliente" class="sr-only">Buscar cliente</label>
+        <input type="search" id="searchCliente" name="searchCliente" placeholder="Buscar cliente..." />
       </div>
 
-      <table class="table" id="clientesTable">
+      <table class="table" id="clientesTable" aria-describedby="clientes-title">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Status</th>
-            <th>Ações</th>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Status</th>
+            <th scope="col">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -102,9 +169,9 @@
             <td>joao@helios.com</td>
             <td><span class="badge success">Ativo</span></td>
             <td class="actions">
-              <button class="btn-small info ver-cadastro"><i class="fa-solid fa-eye"></i></button>
-              <button class="btn-small edit editar-cadastro"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn-small warn tornar-admin"><i class="fa-solid fa-user-shield"></i></button>
+              <button type="button" class="btn-small info ver-cadastro" aria-label="Ver cadastro de João da Silva"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
+              <button type="button" class="btn-small edit editar-cadastro" aria-label="Editar cadastro de João da Silva"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
+              <button type="button" class="btn-small warn tornar-admin" aria-label="Tornar administrador João da Silva"><i class="fa-solid fa-user-shield" aria-hidden="true"></i></button>
             </td>
           </tr>
           <tr data-endereco="Av. Paulista, 1000 - Apto 45, SP" data-telefone="+55 11 91234-5678" data-nascimento="1992-09-03">
@@ -113,339 +180,81 @@
             <td>maria@helios.com</td>
             <td><span class="badge success">Ativo</span></td>
             <td class="actions">
-              <button class="btn-small info ver-cadastro"><i class="fa-solid fa-eye"></i></button>
-              <button class="btn-small edit editar-cadastro"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn-small warn tornar-admin"><i class="fa-solid fa-user-shield"></i></button>
+              <button type="button" class="btn-small info ver-cadastro" aria-label="Ver cadastro de Maria Souza"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
+              <button type="button" class="btn-small edit editar-cadastro" aria-label="Editar cadastro de Maria Souza"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
+              <button type="button" class="btn-small warn tornar-admin" aria-label="Tornar administrador Maria Souza"><i class="fa-solid fa-user-shield" aria-hidden="true"></i></button>
             </td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <!-- PLACAS -->
-    <section id="placas" class="section">
-      <h2>Placas</h2>
-      <p class="muted">Gerencie os modelos de placas solares.</p>
+    <!-- ORÇAMENTO (nova aba) -->
+    <section id="orcamento" class="section" aria-labelledby="orcamento-title">
+      <h2 id="orcamento-title">Orçamentos</h2>
+      <p class="muted">Lista de orçamentos solicitados. Finalize quando o atendimento estiver concluído.</p>
 
-      <div class="placas-head">
-        <button id="novaPlacaBtn" class="btn"><i class="fa-solid fa-plus"></i> Nova Placa</button>
+      <div class="table-actions">
+        <button id="novoOrcBtn" class="btn" type="button"><i class="fa-solid fa-plus" aria-hidden="true"></i> Novo Orçamento</button>
       </div>
 
-      <div id="placasListagem" class="tabela-placas">
-        <h3>Placas Cadastradas</h3>
-        <table id="tabelaPlacas" class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Modelo</th>
-              <th>Potência (W)</th>
-              <th>Eficiência (%)</th>
-              <th>Preço (R$)</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Helios 550W</td>
-              <td>550</td>
-              <td>21.6</td>
-              <td>1499.99</td>
-              <td>
-                <button class="btn-small info ver-placa"><i class="fa-solid fa-eye"></i></button>
-                <button class="btn-small edit editar-placa"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-small del excluir-placa"><i class="fa-solid fa-trash"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div id="carrosselPlaca" class="carrossel hidden">
-        <div class="carrossel-head">
-          <h3>Cadastro de Placa</h3>
-          <button id="cancelarCarrossel" class="btn-outline"><i class="fa-solid fa-xmark"></i> Cancelar</button>
-        </div>
-
-        <div class="carrossel-steps">
-          <div class="step-bullet active">1</div>
-          <div class="step-line"></div>
-          <div class="step-bullet">2</div>
-          <div class="step-line"></div>
-          <div class="step-bullet">3</div>
-          <div class="step-line"></div>
-          <div class="step-bullet">4</div>
-          <div class="step-line"></div>
-          <div class="step-bullet">5</div>
-          <div class="step-line"></div>
-          <div class="step-bullet">6</div>
-        </div>
-
-        <div id="itensCriados" class="carrossel-itens" style="margin:12px 0;padding:10px;border-radius:8px;background:#fbfbfb;border:1px solid #eee">
-          <strong>Itens criados na sessão</strong>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:8px">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <small>Células</small>
-                <button id="clearCelulas" class="btn-small del" title="Limpar células">Limpar</button>
-              </div>
-              <ul id="listCelulas" style="margin:8px 0 0;padding-left:16px"></ul>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <small>Vidros</small>
-                <button id="clearVidros" class="btn-small del" title="Limpar vidros">Limpar</button>
-              </div>
-              <ul id="listVidros" style="margin:8px 0 0;padding-left:16px"></ul>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <small>Estruturas</small>
-                <button id="clearEstruturas" class="btn-small del" title="Limpar estruturas">Limpar</button>
-              </div>
-              <ul id="listEstruturas" style="margin:8px 0 0;padding-left:16px"></ul>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <small>Caixas</small>
-                <button id="clearCaixas" class="btn-small del" title="Limpar caixas">Limpar</button>
-              </div>
-              <ul id="listCaixas" style="margin:8px 0 0;padding-left:16px"></ul>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <small>Tamanhos</small>
-                <button id="clearTamanhos" class="btn-small del" title="Limpar tamanhos">Limpar</button>
-              </div>
-              <ul id="listTamanhos" style="margin:8px 0 0;padding-left:16px"></ul>
-            </div>
-          </div>
-        </div>
-
-        <form id="formPlaca" onsubmit="return false;">
-          <!-- ETAPAS (1..6) - iguais ao exemplo anterior -->
-          <div class="carrossel-page active" data-step="1">
-            <h4>Etapa 1 – Célula</h4>
-            <div class="grid">
-              <div class="field" style="grid-column:1 / -1">
-                <label>Descrição da célula (DSC_CEL)</label>
-                <input type="text" id="celula_dsc" placeholder="Descrição da célula" />
-              </div>
-            </div>
-          </div>
-
-          <div class="carrossel-page" data-step="2">
-            <h4>Etapa 2 – Vidro</h4>
-            <div class="grid">
-              <div class="field">
-                <label>Tipo de vidro (TIPO_VIDRO)</label>
-                <input type="text" id="vidro_tipo" placeholder="Ex: Temperado" />
-              </div>
-              <div class="field">
-                <label>Espessura (ESPESSURA) mm</label>
-                <input type="number" step="0.01" id="vidro_espessura" placeholder="Ex: 3.2" />
-              </div>
-            </div>
-          </div>
-
-          <div class="carrossel-page" data-step="3">
-            <h4>Etapa 3 – Estrutura</h4>
-            <div class="grid">
-              <div class="field" style="grid-column:1 / -1">
-                <label>Descrição da estrutura (DESCRICAO_ESTRUTURA)</label>
-                <input type="text" id="estrutura_dsc" placeholder="Descrição da estrutura" />
-              </div>
-            </div>
-          </div>
-
-          <div class="carrossel-page" data-step="4">
-            <h4>Etapa 4 – Caixa de Conexão</h4>
-            <div class="grid">
-              <div class="field"><label>IP</label><input type="text" id="caixa_ip" /></div>
-              <div class="field"><label>DID</label><input type="text" id="caixa_did" /></div>
-              <div class="field"><label>Espessura do cabo (mm)</label><input type="text" id="caixa_esp_cabo" /></div>
-              <div class="field"><label>Comprimento (mm)</label><input type="number" id="caixa_comp" /></div>
-              <div class="field" style="grid-column:1 / -1"><label>Tipo de conexão</label><input type="text" id="caixa_tipo_con" /></div>
-            </div>
-          </div>
-
-          <div class="carrossel-page" data-step="5">
-            <h4>Etapa 5 – Tamanho</h4>
-            <div class="grid">
-              <div class="field"><label>Altura (mm)</label><input type="number" step="0.1" id="tam_altura" /></div>
-              <div class="field"><label>Largura (mm)</label><input type="number" step="0.1" id="tam_largura" /></div>
-              <div class="field"><label>Espessura (mm)</label><input type="number" step="0.1" id="tam_espessura" /></div>
-            </div>
-          </div>
-
-          <div class="carrossel-page" data-step="6">
-            <h4>Etapa 6 – Placa (Dados técnicos e seleção)</h4>
-            <div class="grid">
-              <div class="field">
-                <label>Preço (PRECO)</label>
-                <input type="number" step="0.01" id="preco" placeholder="0.00" required>
-              </div>
-              <div class="field">
-                <label>Potência Máxima (POTENCIA_MAX)</label>
-                <input type="number" id="potencia" required>
-              </div>
-              <div class="field">
-                <label>Tensão na potência (TENS_POTENCIA)</label>
-                <input type="number" step="0.01" id="tens_potencia" />
-              </div>
-              <div class="field">
-                <label>Corrente na potência (CORRENTE_POTENCIA)</label>
-                <input type="number" step="0.01" id="corrente_potencia" />
-              </div>
-              <div class="field">
-                <label>Eficiência (EFICIENCIA)</label>
-                <input type="number" step="0.01" id="eficiencia" />
-              </div>
-              <div class="field">
-                <label>Nº de células (NUM_CELULAS)</label>
-                <input type="number" id="num_celulas" />
-              </div>
-              <div class="field">
-                <label>Peso (PESO) kg</label>
-                <input type="number" step="0.1" id="peso" />
-              </div>
-              <div class="field">
-                <label>IMETRO (opcional)</label>
-                <input type="text" id="imetro" maxlength="11" />
-              </div>
-
-              <div class="field" style="grid-column:1 / -1">
-                <label>Célula</label>
-                <select id="sel_celula"></select>
-              </div>
-              <div class="field">
-                <label>Vidro</label>
-                <select id="sel_vidro"></select>
-              </div>
-              <div class="field">
-                <label>Estrutura</label>
-                <select id="sel_estrutura"></select>
-              </div>
-              <div class="field">
-                <label>Caixa de Conexão</label>
-                <select id="sel_caixa"></select>
-              </div>
-              <div class="field">
-                <label>Tamanho</label>
-                <select id="sel_tamanho"></select>
-              </div>
-            </div>
-          </div>
-
-          <div class="carrossel-nav">
-            <button type="button" class="btn-outline" id="voltarStep" disabled><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <div class="grow"></div>
-            <button type="button" class="btn" id="proximoStep">Próximo <i class="fa-solid fa-arrow-right"></i></button>
-            <button type="submit" class="btn hidden" id="finalizarCadastro"><i class="fa-solid fa-floppy-disk"></i> Cadastrar Placa</button>
-          </div>
-        </form>
-      </div>
+      <table class="table" id="orcamentosTable" aria-describedby="orcamento-title">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nome do Cliente</th>
+            <th scope="col">Endereço</th>
+            <th scope="col">Finalizado</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Entradas serão renderizadas via JS -->
+        </tbody>
+      </table>
     </section>
 
-    <!-- MODAL PLACA (visualizar) -->
-    <div id="modalPlaca" class="modal" aria-hidden="true">
-      <div class="modal-card">
-        <div class="modal-head">
-          <h3 id="modalPlacaTitulo">Dados da Placa</h3>
-          <button id="fecharModalPlaca" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="modal-body">
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
-            <div><strong>Modelo:</strong> <div id="p_modelo"></div></div>
-            <div><strong>Preço (R$):</strong> <div id="p_preco"></div></div>
-            <div><strong>Potência (W):</strong> <div id="p_potencia"></div></div>
-            <div><strong>Eficiência (%):</strong> <div id="p_eficiencia"></div></div>
-            <div><strong>Tensão (V) na potência:</strong> <div id="p_tens_pot"></div></div>
-            <div><strong>Corrente (A) na potência:</strong> <div id="p_corr_pot"></div></div>
-            <div><strong>Tensão circuito aberto:</strong> <div id="p_tens_circ"></div></div>
-            <div><strong>Corrente curto:</strong> <div id="p_corr_curto"></div></div>
-            <div><strong>Nº células:</strong> <div id="p_num_cel"></div></div>
-            <div><strong>Peso (kg):</strong> <div id="p_peso"></div></div>
-            <div><strong>IMETRO:</strong> <div id="p_imetro"></div></div>
-            <div><strong>Fusível:</strong> <div id="p_fusivel"></div></div>
+    <!-- SIMULAÇÕES (nova aba) -->
+    <section id="simulacoes" class="section" aria-labelledby="simulacoes-title">
+      <h2 id="simulacoes-title">Simulações</h2>
+      <p class="muted">Registro das simulações realizadas pelo site.</p>
 
-            <div style="grid-column:1 / -1;margin-top:8px">
-              <strong>Itens relacionados:</strong>
-              <ul id="p_itens_rel" style="margin-top:6px;padding-left:16px"></ul>
-            </div>
-          </div>
-        </div>
-        <div class="modal-foot">
-          <button id="fecharModalPlacaBtn" class="btn">Fechar</button>
-        </div>
-      </div>
-    </div>
+      <table class="table" id="simulacoesTable" aria-describedby="simulacoes-title">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Consumo médio (kWh/mês)</th>
+            <th scope="col">Tarifa média (R$/kWh)</th>
+            <th scope="col">Cobertura (%)</th>
+            <th scope="col">Área mínima (m²)</th>
+            <th scope="col">Valor aproximado (R$)</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Entradas serão renderizadas via JS -->
+        </tbody>
+      </table>
+    </section>
 
-    <!-- MODAL CLIENTE (ver/editar) -->
-    <div id="modalCliente" class="modal" aria-hidden="true">
-      <div class="modal-card">
-        <div class="modal-head">
-          <h3 id="modalClienteTitulo">Dados do Cliente</h3>
-          <button id="fecharModalCliente" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="modal-body">
-          <form id="formCliente">
-            <div class="grid">
-              <div class="field">
-                <label>Nome</label>
-                <input type="text" id="cliNome" />
-              </div>
-              <div class="field">
-                <label>E-mail</label>
-                <input type="email" id="cliEmail" />
-              </div>
-              <div class="field">
-                <label>Status</label>
-                <select id="cliStatus">
-                  <option value="Ativo">Ativo</option>
-                  <option value="Inativo">Inativo</option>
-                </select>
-              </div>
-
-              <div class="field" style="grid-column: 1 / -1;">
-                <label>Endereço</label>
-                <input type="text" id="cliEndereco" placeholder="Rua, número, bairro, cidade" />
-              </div>
-              <div class="field">
-                <label>Telefone</label>
-                <input type="tel" id="cliTelefone" placeholder="+55 11 9xxxx-xxxx" />
-              </div>
-              <div class="field">
-                <label>Data de Nascimento</label>
-                <input type="date" id="cliNascimento" />
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-foot">
-          <button id="salvarCliente" class="btn"><i class="fa-solid fa-check"></i> Salvar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- USUÁRIOS -->
-    <section id="usuarios" class="section">
-      <h2>Usuários</h2>
+    <!-- USUÁRIOS (mantido) -->
+    <section id="usuarios" class="section" aria-labelledby="usuarios-title">
+      <h2 id="usuarios-title">Usuários</h2>
       <p class="muted">Gerencie os administradores e funcionários do sistema Helios.</p>
 
       <div class="usuarios-head">
-        <button id="novoUsuarioBtn" class="btn"><i class="fa-solid fa-plus"></i> Novo Usuário</button>
+        <button id="novoUsuarioBtn" class="btn" type="button"><i class="fa-solid fa-plus" aria-hidden="true"></i> Novo Usuário</button>
       </div>
 
-      <table id="usuariosTable" class="table">
+      <table id="usuariosTable" class="table" aria-describedby="usuarios-title">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Função</th>
-            <th>Status</th>
-            <th>Ações</th>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Função</th>
+            <th scope="col">Status</th>
+            <th scope="col">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -456,9 +265,9 @@
             <td>Admin</td>
             <td><span class="badge success">Ativo</span></td>
             <td class="actions">
-              <button class="btn-small edit editar-usuario"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn-small del excluir-usuario"><i class="fa-solid fa-trash"></i></button>
-              <button class="btn-small warn reset-senha"><i class="fa-solid fa-key"></i></button>
+              <button type="button" class="btn-small edit editar-usuario" aria-label="Editar usuário Gabriel Souza"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
+              <button type="button" class="btn-small del excluir-usuario" aria-label="Excluir usuário Gabriel Souza"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
+              <button type="button" class="btn-small warn reset-senha" aria-label="Resetar senha de Gabriel Souza"><i class="fa-solid fa-key" aria-hidden="true"></i></button>
             </td>
           </tr>
         </tbody>
@@ -466,53 +275,116 @@
     </section>
   </main>
 
+  <!-- MODALS CLIENTE / USUÁRIO / PLACA (PLACA removido) - mantidos os modais utilizados no JS -->
+  <!-- MODAL CLIENTE (ver/editar) -->
+  <div id="modalCliente" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalClienteTitulo">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalClienteTitulo">Dados do Cliente</h3>
+        <button id="fecharModalCliente" class="btn-icon" type="button" aria-label="Fechar modal de cliente"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formCliente" novalidate>
+          <div class="grid">
+            <div class="field">
+              <label for="cliNome">Nome</label>
+              <input type="text" id="cliNome" name="cliNome" />
+            </div>
+
+            <div class="field">
+              <label for="cliEmail">E-mail</label>
+              <input type="email" id="cliEmail" name="cliEmail" />
+            </div>
+
+            <div class="field">
+              <label for="cliStatus">Status</label>
+              <select id="cliStatus" name="cliStatus">
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
+              </select>
+            </div>
+
+            <div class="field campo-duplo" style="grid-column: 1 / -1;">
+              <label for="cliCep">Endereço - CEP</label>
+              <div class="duo">
+                <input type="text" id="cliCep" name="cliCep" placeholder="CEP">
+                <input type="text" id="cliNumero" name="cliNumero" placeholder="Número">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cliTelefone">Telefone</label>
+              <input type="tel" id="cliTelefone" name="cliTelefone" placeholder="+55 11 9xxxx-xxxx" />
+            </div>
+
+            <div class="field">
+              <label for="cliNascimento">Data de Nascimento</label>
+              <input type="date" id="cliNascimento" name="cliNascimento" />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-foot">
+        <button id="salvarCliente" class="btn" type="button"><i class="fa-solid fa-check" aria-hidden="true"></i> Salvar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL USUÁRIO -->
-  <div id="modalUsuario" class="modal" aria-hidden="true">
+  <div id="modalUsuario" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalUsuarioTitulo">
     <div class="modal-card">
       <div class="modal-head">
         <h3 id="modalUsuarioTitulo">Novo Usuário</h3>
-        <button id="fecharModalUsuario" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
+        <button id="fecharModalUsuario" class="btn-icon" type="button" aria-label="Fechar modal de usuário"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
       </div>
+
       <div class="modal-body">
-        <form id="formUsuario">
+        <form id="formUsuario" novalidate>
           <div class="grid">
             <div class="field">
-              <label>Nome</label>
-              <input type="text" id="userNome" required />
+              <label for="userNome">Nome</label>
+              <input type="text" id="userNome" name="userNome" required />
             </div>
+
             <div class="field">
-              <label>E-mail</label>
-              <input type="email" id="userEmail" required />
+              <label for="userEmail">E-mail</label>
+              <input type="email" id="userEmail" name="userEmail" required />
             </div>
+
             <div class="field">
-              <label>Função</label>
-              <select id="userFuncao">
+              <label for="userFuncao">Função</label>
+              <select id="userFuncao" name="userFuncao">
                 <option>Visualizador</option>
                 <option>Técnico</option>
                 <option>Admin</option>
               </select>
             </div>
+
             <div class="field">
-              <label>Status</label>
-              <select id="userStatus">
+              <label for="userStatus">Status</label>
+              <select id="userStatus" name="userStatus">
                 <option value="Ativo">Ativo</option>
                 <option value="Inativo">Inativo</option>
               </select>
             </div>
+
             <div class="field" id="senhaField">
-              <label>Senha</label>
-              <input type="password" id="userSenha" placeholder="••••••••" required />
+              <label for="userSenha">Senha</label>
+              <input type="password" id="userSenha" name="userSenha" placeholder="••••••••" required />
             </div>
           </div>
         </form>
       </div>
+
       <div class="modal-foot">
-        <button id="salvarUsuario" class="btn"><i class="fa-solid fa-check"></i> Salvar</button>
+        <button id="salvarUsuario" class="btn" type="button"><i class="fa-solid fa-check" aria-hidden="true"></i> Salvar</button>
       </div>
     </div>
   </div>
 
   <!-- TOAST -->
-  <div id="toast" class="toast"><i class="fa-solid fa-check"></i> Ação realizada com sucesso</div>
+  <div id="toast" class="toast" role="status" aria-live="polite"><i class="fa-solid fa-check" aria-hidden="true"></i> <span>Ação realizada com sucesso</span></div>
 </body>
 </html>

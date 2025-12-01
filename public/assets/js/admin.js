@@ -172,6 +172,76 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===== Clientes: busca simples e modal ===== */
   const searchCliente = document.getElementById("searchCliente");
   const clientesTable = document.getElementById("clientesTable");
+  const clientesTableBody = clientesTable?.querySelector("tbody");
+  
+  // Função para carregar clientes do servidor
+  async function renderClientes() {
+    if (!clientesTableBody) return;
+    clientesTableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Carregando...</td></tr>";
+
+    try {
+      const response = await fetch('../controllers/admin/clientesListController.php', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const responseText = await response.text();
+      console.log('Resposta raw clientes:', responseText);
+
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Erro de parse JSON:', parseError);
+        throw new Error('Servidor retornou conteúdo inválido');
+      }
+
+      if (result.error) {
+        throw new Error(result.message || 'Erro desconhecido do servidor');
+      }
+
+      const clientes = result.clientes || [];
+      clientesTableBody.innerHTML = "";
+
+      if (clientes.length === 0) {
+        clientesTableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; color: #999;'>Nenhum cliente encontrado</td></tr>";
+        return;
+      }
+
+      clientes.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.dataset.id = c.idCliente;
+        tr.dataset.cep = c.enderecoCep || "";
+        tr.dataset.numero = c.enderecoNumero || "";
+        tr.dataset.telefone = c.telefone || "";
+        tr.dataset.nascimento = c.dataNascimento || "";
+        tr.innerHTML = `
+          <td>${c.idCliente}</td>
+          <td>${c.nomeCliente}</td>
+          <td>${c.email || 'N/A'}</td>
+          <td><span class="badge success">Ativo</span></td>
+          <td class="actions">
+            <button type="button" class="btn-small info ver-cadastro" aria-label="Ver cadastro de ${c.nomeCliente}"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
+            <button type="button" class="btn-small warn tornar-admin" aria-label="Tornar administrador ${c.nomeCliente}"><i class="fa-solid fa-user-shield" aria-hidden="true"></i></button>
+          </td>`;
+        clientesTableBody.appendChild(tr);
+      });
+
+    } catch (error) {
+      console.error('Erro ao carregar clientes:', error);
+      clientesTableBody.innerHTML = `<tr><td colspan='5' style='text-align: center; color: #f44336;'>Erro: ${error.message}</td></tr>`;
+    }
+  }
+  
+  // Carregar clientes na inicialização
+  renderClientes();
+  
   if (searchCliente && clientesTable) {
     searchCliente.addEventListener("input", () => {
       const q = searchCliente.value.toLowerCase();
@@ -236,11 +306,47 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!row) return;
 
     if (btn.classList.contains("ver-cadastro")) openModalCliente(row, "ver");
-    if (btn.classList.contains("editar-cadastro")) openModalCliente(row, "editar");
     if (btn.classList.contains("tornar-admin")) {
-      toast.textContent = "Permissão alterada: usuário agora é Admin";
-      toast.classList.add("show");
-      setTimeout(()=> toast.classList.remove("show"), 2200);
+      const clientId = row.dataset.id;
+      if (!confirm("Alterar permissões de administrador para este cliente?")) return;
+      
+      // Desabilitar botão durante requisição
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>';
+      
+      // Fazer requisição AJAX
+      const formData = new FormData();
+      formData.append('clientId', clientId);
+      
+      fetch('../controllers/admin/changeAdminStateController.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.error) {
+          throw new Error(result.message);
+        }
+        
+        toast.textContent = "Permissões de administrador alteradas com sucesso!";
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2200);
+      })
+      .catch(error => {
+        console.error('Erro ao alterar permissões:', error);
+        toast.textContent = `Erro: ${error.message}`;
+        toast.style.backgroundColor = '#f44336';
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+          toast.style.backgroundColor = '';
+        }, 3000);
+      })
+      .finally(() => {
+        // Reabilitar botão
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-user-shield" aria-hidden="true"></i>';
+      });
     }
   });
 
@@ -267,59 +373,153 @@ document.addEventListener("DOMContentLoaded", () => {
   const orcamentosTableBody = document.querySelector("#orcamentosTable tbody");
   const novoOrcBtn = document.getElementById("novoOrcBtn");
 
-  // exemplo inicial (pode vir do servidor/localStorage)
-  const orcamentos = [
-    { id: 1, nome: "Carlos Pereira", endereco: "R. Verde, 22", finalizado: false },
-    { id: 2, nome: "Ana Oliveira", endereco: "Av. Leste, 100", finalizado: true }
-  ];
+  // Orçamentos serão carregados dinamicamente do servidor
 
-  const renderOrcamentos = () => {
+  async function renderOrcamentos() {
     if (!orcamentosTableBody) return;
-    orcamentosTableBody.innerHTML = "";
-    orcamentos.forEach(o => {
-      const tr = document.createElement("tr");
-      tr.dataset.id = o.id;
-      tr.innerHTML = `
-        <td>${o.id}</td>
-        <td>${o.nome}</td>
-        <td>${o.endereco}</td>
-        <td>${o.finalizado ? '<span class="badge success">Sim</span>' : '<span class="badge">Não</span>'}</td>
-        <td class="actions">
-          <button class="btn-small ${o.finalizado ? 'btn-small.edit' : 'btn'} finalizar-btn" data-id="${o.id}" type="button">${o.finalizado ? 'Reabrir' : 'Finalizar'}</button>
-          <button class="btn-small del excluir-orc" data-id="${o.id}" type="button" title="Remover"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
-        </td>`;
-      orcamentosTableBody.appendChild(tr);
-    });
-  };
+    orcamentosTableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Carregando...</td></tr>";
+
+    try {
+      const response = await fetch('../controllers/admin/orcamentosListController.php', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const responseText = await response.text();
+      console.log('Resposta raw orçamentos:', responseText);
+
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Erro de parse JSON:', parseError);
+        throw new Error('Servidor retornou conteúdo inválido');
+      }
+
+      if (result.error) {
+        throw new Error(result.message || 'Erro desconhecido do servidor');
+      }
+
+      const orcamentos = result.orcamentos || [];
+      orcamentosTableBody.innerHTML = "";
+
+      if (orcamentos.length === 0) {
+        orcamentosTableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; color: #999;'>Nenhum orçamento encontrado</td></tr>";
+        return;
+      }
+
+      orcamentos.forEach(o => {
+        const finalizado = o.status === 'FINALIZADO';
+        const tr = document.createElement("tr");
+        tr.dataset.id = o.idOrcamento;
+        tr.innerHTML = `
+          <td>${o.idOrcamento}</td>
+          <td>${o.nomeCliente}</td>
+          <td>${o.endereco}</td>
+          <td>${finalizado ? '<span class="badge success">Sim</span>' : '<span class="badge">Não</span>'}</td>
+          <td class="actions">
+            <button class="btn-small ${finalizado ? 'primary' : 'success'} finalizar-btn" data-id="${o.idOrcamento}" type="button">${finalizado ? 'Reabrir' : 'Finalizar'}</button>
+            <button class="btn-small del excluir-orc" data-id="${o.idOrcamento}" type="button" title="Remover"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
+          </td>`;
+        orcamentosTableBody.appendChild(tr);
+      });
+
+    } catch (error) {
+      console.error('Erro ao carregar orçamentos:', error);
+      orcamentosTableBody.innerHTML = `<tr><td colspan='5' style='text-align: center; color: #f44336;'>Erro: ${error.message}</td></tr>`;
+    }
+  }
 
   novoOrcBtn?.addEventListener("click", () => {
-    const id = orcamentos.length ? orcamentos[orcamentos.length-1].id + 1 : 1;
-    orcamentos.push({ id, nome: `Cliente ${id}`, endereco: "Endereço exemplo", finalizado: false });
-    renderOrcamentos();
-    toast.textContent = "Orçamento criado (exemplo)";
+    // TODO: Implementar modal para criar novo orçamento
+    toast.textContent = "Funcionalidade em desenvolvimento";
     toast.classList.add("show");
     setTimeout(()=> toast.classList.remove("show"), 1800);
   });
 
-  orcamentosTableBody?.addEventListener("click", (e) => {
+  orcamentosTableBody?.addEventListener("click", async (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
     const id = parseInt(btn.dataset.id, 10);
-    const idx = orcamentos.findIndex(o => o.id === id);
+    
     if (btn.classList.contains("finalizar-btn")) {
-      if (idx === -1) return;
-      orcamentos[idx].finalizado = !orcamentos[idx].finalizado;
-      renderOrcamentos();
-      toast.textContent = orcamentos[idx].finalizado ? "Orçamento finalizado" : "Orçamento reaberto";
-      toast.classList.add("show");
-      setTimeout(()=> toast.classList.remove("show"), 1800);
+      const currentText = btn.textContent.trim();
+      const isFinalizando = currentText === "Finalizar";
+      
+      if (!confirm(`Tem certeza que deseja ${isFinalizando ? 'finalizar' : 'reabrir'} este orçamento?`)) return;
+      
+      // Desabilitar botão durante requisição
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>';
+      
+      try {
+        console.log(`${isFinalizando ? 'Finalizando' : 'Reabrindo'} orçamento ID: ${id}`);
+        
+        const formData = new FormData();
+        formData.append('orcamentoId', id);
+        
+        const controllerUrl = isFinalizando 
+          ? '../controllers/admin/orcamentoFinishController.php'
+          : '../controllers/admin/orcamentoReopenController.php';
+        
+        const response = await fetch(controllerUrl, {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const responseText = await response.text();
+        console.log('Resposta do finish:', responseText);
+        
+        let result;
+        try {
+          result = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('Erro de parse JSON:', parseError);
+          throw new Error('Servidor retornou resposta inválida');
+        }
+        
+        if (result.error) {
+          throw new Error(result.message || 'Erro ao alterar status do orçamento');
+        }
+        
+        // Sucesso - recarregar lista
+        await renderOrcamentos();
+        
+        toast.textContent = `Orçamento ${isFinalizando ? 'finalizado' : 'reaberto'} com sucesso!`;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2000);
+        
+      } catch (error) {
+        console.error('Erro ao alterar orçamento:', error);
+        
+        // Reabilitar botão em caso de erro
+        btn.disabled = false;
+        btn.innerHTML = currentText;
+        
+        toast.textContent = `Erro: ${error.message}`;
+        toast.style.backgroundColor = '#f44336';
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+          toast.style.backgroundColor = '';
+        }, 3000);
+      }
     }
+    
     if (btn.classList.contains("excluir-orc")) {
-      if (idx === -1) return;
       if (!confirm("Remover este orçamento?")) return;
-      orcamentos.splice(idx,1);
-      renderOrcamentos();
-      toast.textContent = "Orçamento removido";
+      // TODO: Implementar controller para deletar orçamento
+      toast.textContent = "Funcionalidade em desenvolvimento";
       toast.classList.add("show");
       setTimeout(()=> toast.classList.remove("show"), 1800);
     }
@@ -385,20 +585,72 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  simulacoesTableBody?.addEventListener("click", (e) => {
+  simulacoesTableBody?.addEventListener("click", async (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
+    
     if (btn.classList.contains("excluir-sim")) {
-      const id = parseInt(btn.dataset.id,10);
-      const idx = simulacoes.findIndex(s => s.id === id);
-      if (idx === -1) return;
-      if (!confirm("Remover esta simulação?")) return;
-      simulacoes.splice(idx,1);
-      localStorage.setItem("simulacoes", JSON.stringify(simulacoes));
-      renderSimulacoes();
-      toast.textContent = "Simulação removida";
-      toast.classList.add("show");
-      setTimeout(()=> toast.classList.remove("show"), 1800);
+      const id = parseInt(btn.dataset.id, 10);
+      if (!id) return;
+      
+      if (!confirm("Tem certeza que deseja remover esta simulação?")) return;
+      
+      // Desabilitar botão durante requisição
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>';
+      
+      try {
+        console.log(`Deletando simulação ID: ${id}`);
+        
+        const formData = new FormData();
+        formData.append('simulationId', id);
+        
+        const response = await fetch('../controllers/admin/simulacaoDeleteController.php', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const responseText = await response.text();
+        console.log('Resposta do delete:', responseText);
+        
+        let result;
+        try {
+          result = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('Erro de parse JSON:', parseError);
+          throw new Error('Servidor retornou resposta inválida');
+        }
+        
+        if (result.error) {
+          throw new Error(result.message || 'Erro ao deletar simulação');
+        }
+        
+        // Sucesso - recarregar lista
+        await renderSimulacoes();
+        
+        toast.textContent = "Simulação removida com sucesso!";
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2000);
+        
+      } catch (error) {
+        console.error('Erro ao deletar simulação:', error);
+        
+        // Reabilitar botão em caso de erro
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i>';
+        
+        toast.textContent = `Erro: ${error.message}`;
+        toast.style.backgroundColor = '#f44336';
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+          toast.style.backgroundColor = '';
+        }, 3000);
+      }
     }
   });
 

@@ -100,7 +100,6 @@
       <a href="#" data-section="orcamento"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> <span>Orçamento</span></a>
       <a href="#" data-section="simulacoes"><i class="fa-solid fa-calculator" aria-hidden="true"></i> <span>Simulações</span></a>
 
-      <a href="#" data-section="usuarios"><i class="fa-solid fa-id-badge" aria-hidden="true"></i> <span>Usuários</span></a>
       <button id="logout" type="button" aria-label="Sair"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span class="sr-only">Sair</span></button>
     </nav>
   </header>
@@ -163,28 +162,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-endereco="Rua das Flores, 123 - Centro, SP" data-telefone="+55 11 98765-4321" data-nascimento="1985-04-12">
-            <td>1</td>
-            <td>João da Silva</td>
-            <td>joao@helios.com</td>
-            <td><span class="badge success">Ativo</span></td>
-            <td class="actions">
-              <button type="button" class="btn-small info ver-cadastro" aria-label="Ver cadastro de João da Silva"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
-              <button type="button" class="btn-small edit editar-cadastro" aria-label="Editar cadastro de João da Silva"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
-              <button type="button" class="btn-small warn tornar-admin" aria-label="Tornar administrador João da Silva"><i class="fa-solid fa-user-shield" aria-hidden="true"></i></button>
-            </td>
-          </tr>
-          <tr data-endereco="Av. Paulista, 1000 - Apto 45, SP" data-telefone="+55 11 91234-5678" data-nascimento="1992-09-03">
-            <td>2</td>
-            <td>Maria Souza</td>
-            <td>maria@helios.com</td>
-            <td><span class="badge success">Ativo</span></td>
-            <td class="actions">
-              <button type="button" class="btn-small info ver-cadastro" aria-label="Ver cadastro de Maria Souza"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
-              <button type="button" class="btn-small edit editar-cadastro" aria-label="Editar cadastro de Maria Souza"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
-              <button type="button" class="btn-small warn tornar-admin" aria-label="Tornar administrador Maria Souza"><i class="fa-solid fa-user-shield" aria-hidden="true"></i></button>
-            </td>
-          </tr>
+          <!-- Entradas serão renderizadas via JS -->
         </tbody>
       </table>
     </section>
@@ -195,7 +173,6 @@
       <p class="muted">Lista de orçamentos solicitados. Finalize quando o atendimento estiver concluído.</p>
 
       <div class="table-actions">
-        <button id="novoOrcBtn" class="btn" type="button"><i class="fa-solid fa-plus" aria-hidden="true"></i> Novo Orçamento</button>
       </div>
 
       <table class="table" id="orcamentosTable" aria-describedby="orcamento-title">
@@ -233,43 +210,6 @@
         </thead>
         <tbody>
           <!-- Entradas serão renderizadas via JS -->
-        </tbody>
-      </table>
-    </section>
-
-    <!-- USUÁRIOS (mantido) -->
-    <section id="usuarios" class="section" aria-labelledby="usuarios-title">
-      <h2 id="usuarios-title">Usuários</h2>
-      <p class="muted">Gerencie os administradores e funcionários do sistema Helios.</p>
-
-      <div class="usuarios-head">
-        <button id="novoUsuarioBtn" class="btn" type="button"><i class="fa-solid fa-plus" aria-hidden="true"></i> Novo Usuário</button>
-      </div>
-
-      <table id="usuariosTable" class="table" aria-describedby="usuarios-title">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nome</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Função</th>
-            <th scope="col">Status</th>
-            <th scope="col">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Gabriel Souza</td>
-            <td>gabriel@helios.com</td>
-            <td>Admin</td>
-            <td><span class="badge success">Ativo</span></td>
-            <td class="actions">
-              <button type="button" class="btn-small edit editar-usuario" aria-label="Editar usuário Gabriel Souza"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
-              <button type="button" class="btn-small del excluir-usuario" aria-label="Excluir usuário Gabriel Souza"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
-              <button type="button" class="btn-small warn reset-senha" aria-label="Resetar senha de Gabriel Souza"><i class="fa-solid fa-key" aria-hidden="true"></i></button>
-            </td>
-          </tr>
         </tbody>
       </table>
     </section>

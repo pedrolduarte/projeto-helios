@@ -65,6 +65,8 @@ a{text-decoration:none}
 .btn-small.del{background:#ef4444}
 .btn-small.info{background:#06b6d4}
 .btn-small.warn{background:#f59e0b}
+.btn-small.success{background:#22c55e}
+.btn-small.primary{background:#3b82f6}
 
 /* Placas */
 .placas-head{display:flex;justify-content:flex-end;margin:12px 0}

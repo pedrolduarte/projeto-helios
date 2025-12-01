@@ -50,8 +50,9 @@
         $clientID = $_SESSION['clientID'];
         $stmt = $mysqli->prepare(
             "INSERT INTO 
-                SIMULACOES (ID_CLIENTE, CONSUMO_MEDIO, TARIFA_MEDIA, COBERTURA, AREA_MINIMA, VALOR_APROXIMADO)
-            VALUES (?, ?, ?, ?, ?, ?)");
+                SIMULACOES (CONSUMO_MEDIO, TARIFA_MEDIA, COBERTURA, AREA_MINIMA, VALOR_APROXIMADO)
+            VALUES (?, ?, ?, ?, ?)"
+        );
         if (!$stmt) {
             http_response_code(500); // Erro interno do servidor
             echo json_encode([
@@ -61,8 +62,7 @@
             exit;
         }
 
-        $stmt->bind_param("iddddi", 
-            $clientID, 
+        $stmt->bind_param("ddddi", 
             $consumoMedio, 
             $tarifaMedia, 
             $coberturaDesejada, 

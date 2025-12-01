@@ -1,5 +1,5 @@
 <?php
-    require("adminAuthentication.php"); // Comentado temporariamente para teste
+    require("adminAuthentication.php");
     require("../../config/connection.php");
 
     function getMonthName($monthNumber) {

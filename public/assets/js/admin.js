@@ -330,14 +330,44 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===== SIMULAÇÕES ===== */
   const simulacoesTableBody = document.querySelector("#simulacoesTable tbody");
   // carregar simulações de exemplo ou localStorage
-  const simulacoes = JSON.parse(localStorage.getItem("simulacoes")) || [
-    { id: 1, consumo: 300, tarifa: 0.90, cobertura: 80, area: 20.0, valor: 12682.8 },
-    { id: 2, consumo: 450, tarifa: 0.95, cobertura: 70, area: 30.0, valor: 21000.0 }
-  ];
 
-  const renderSimulacoes = () => {
+
+  async function renderSimulacoes() {
     if (!simulacoesTableBody) return;
     simulacoesTableBody.innerHTML = "";
+
+    const response = await fetch('../controllers/admin/simulacoesListController.php', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    // Primeiro verificar o que está sendo retornado
+    const responseText = await response.text();
+    console.log('Resposta raw do servidor:', responseText);
+
+    // Tentar fazer parse do JSON
+    let simulacoes;
+    try {
+      simulacoes = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('Erro de parse JSON:', parseError);
+      console.error('Conteúdo retornado:', responseText);
+      throw new Error('Servidor retornou conteúdo inválido: ' + responseText.substring(0, 200));
+    }
+
+    console.log('Resposta do controller:', simulacoes);
+
+    if (simulacoes.error) {
+      throw new Error(simulacoes.message || 'Erro desconhecido do servidor');
+    }
+    
+    simulacoes = simulacoes.data || [];
     simulacoes.forEach(s => {
       const tr = document.createElement("tr");
       tr.dataset.id = s.id;
@@ -347,13 +377,13 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>R$ ${s.tarifa.toFixed(2)}</td>
         <td>${s.cobertura}%</td>
         <td>${(s.area || '—')}</td>
-        <td>R$ ${Number(s.valor).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td>
+        <td>R$ ${Number(s.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
         <td class="actions">
           <button class="btn-small del excluir-sim" data-id="${s.id}" type="button" title="Remover"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
         </td>`;
       simulacoesTableBody.appendChild(tr);
     });
-  };
+  }
 
   simulacoesTableBody?.addEventListener("click", (e) => {
     const btn = e.target.closest("button");

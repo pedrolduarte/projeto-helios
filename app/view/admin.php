@@ -31,7 +31,7 @@
       $stmt->close();
     }
 
-    $stmt = $mysqli->prepare("SELECT COUNT(*) as total FROM CLIENTES WHERE CLIENTE_INSTALADO = 1");
+    $stmt = $mysqli->prepare("SELECT COUNT(*) as total FROM CLIENTE WHERE CLIENTE_INSTALADO = 1");
     if ($stmt && $stmt->execute()) {
       $result = $stmt->get_result();
       if ($result) {
